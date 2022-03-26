@@ -4,22 +4,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class Malt {
+public class Yeast {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "malt")
-    private Set<RecipeMalt> recipeMalts;
+    @NotBlank
     private String name;
-    private Double extractionRate;
-    private Double ebc;
+    @NotNull
+    private String form;
+    private String laboratory;
 }
