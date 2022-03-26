@@ -8,16 +8,20 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "recipe_malt")
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class RecipeMalt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
-    @OneToMany(mappedBy = "user")
-    private Set<Recipe> recipes;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MALT_ID")
+    private Malt malt;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "RECIPE_ID")
+    private Recipe recipe;
+    private int amount;
 
 }
