@@ -1,2 +1,8 @@
-package pl.brewingbuddy.repositories;public interface UserRepository {
+package pl.brewingbuddy.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import pl.brewingbuddy.entities.User;
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 }

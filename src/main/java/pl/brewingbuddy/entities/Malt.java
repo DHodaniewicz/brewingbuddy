@@ -18,8 +18,9 @@ public class Malt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(mappedBy = "malt")
-    private Set<RecipeMalt> recipeMalts;
+    private Set<RecipeMalt> recipeMalt;
     private String name;
     private Double extractionRate;
     private Double ebc;
+    private String type;
 }

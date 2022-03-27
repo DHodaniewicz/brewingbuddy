@@ -14,8 +14,9 @@
 </head>
 <body>
 <%--@elvariable id="recipe" type="pl.brewingbuddy.entities.Recipe"--%>
-<form:form method="post" modelAttribute="recipe">
+<form:form method="post" modelAttribute="recipe" action="/recipe/add/">
     <p>
+        <form:hidden path="id"></form:hidden>
         <form:label path="name">Recipe name: </form:label>
         <form:input path="name"/>
         <form:select itemValue="id" itemLabel="beerStyle"
@@ -72,5 +73,23 @@
     </p>
     <p><input type="submit" value="Save"></p>
 </form:form>
+
+<%--@elvariable id="recipeMalt" type="pl.brewingbuddy.entities.RecipeMalt"--%>
+<form:form method="post" modelAttribute="recipeMalt" action="/recipe/add/malt">
+    <p>
+        <form:label path="malt.id">Choose malt: </form:label>
+        <form:select itemValue="id" itemLabel="recipeMalt"
+                     path="malt.id" items="${availableMalts}"/>
+
+        <form:label path="amount">Amount of Mesh: </form:label>
+        <form:input path="amount"/>
+        <form:label path="amount"> g </form:label>
+    </p>
+    <p>
+        <form:hidden path="recipe.id" value="${recipe.id}"></form:hidden>
+    </p>
+    <p><input type="submit" value="Save"></p>
+</form:form>
+
 </body>
 </html>

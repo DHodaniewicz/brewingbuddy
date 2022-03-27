@@ -1,2 +1,7 @@
-package pl.brewingbuddy.servicess;public class RecipeService {
+package pl.brewingbuddy.servicess;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class RecipeService {
 }

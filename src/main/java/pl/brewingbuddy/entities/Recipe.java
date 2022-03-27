@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -16,17 +17,12 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-
-    @ManyToOne
-    private Yeast yeast;
-
     // General
     @ManyToOne
     private User user;
     private String name;
-    private String style;
+    @ManyToOne
+    private BeerStyle beerStyle;
     private boolean isPublic;
     // Gob
     private Double expectedAmountOfBeer;
@@ -40,7 +36,7 @@ public class Recipe {
     private Double amountOfWortAfterBoiling;
     //Fermenting ingredients
     @OneToMany(mappedBy = "recipe")
-    private Set<RecipeMalt> recipeMalts;
+    private Set<RecipeMalt> recipeMalt;
     // Mesh ingredients -calculated values
     private Double abv;
     private Double srm;
@@ -55,13 +51,18 @@ public class Recipe {
     private Double overallMeshVolume;
     //Boiling
     @OneToMany(mappedBy = "recipe")
-    private Set<RecipeHop> recipeHops;
+    private Set<RecipeHop> recipeHop;
     //Boiling calculated
     private Double ibu;
-
+    //Fermentation
+    @ManyToOne
+    private Yeast yeast;
     //Additional ingredients
     @OneToMany(mappedBy = "recipe")
-    private Set<RecipeAdditionalIngredient> recipeAdditionalIngredients;
+    private Set<RecipeAdditionalIngredient> recipeAdditionalIngredient;
+
+    //Notes
+    private String notes;
 
 
 }

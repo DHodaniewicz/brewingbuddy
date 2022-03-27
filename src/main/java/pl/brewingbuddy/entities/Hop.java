@@ -9,7 +9,7 @@ public class Hop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(mappedBy = "hop")
-    private Set<RecipeHop> recipeHops;
+    private Set<RecipeHop> recipeHop;
     private String name;
     private Double alfaAcid;
     private String manufacturer;
