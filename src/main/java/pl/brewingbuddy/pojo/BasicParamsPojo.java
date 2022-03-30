@@ -15,6 +15,11 @@ public class BasicParamsPojo {
     private Double vaporisationSpeed;
     private Double boilingLoss;
     private Double fermentationLoss;
+    private Double meshProcesTime;
+    private Double meshProcessTemperature;
+    private Double waterMaltRatio;
+    private Double meshPerformance;
+    private Long yeastId;
 
     @Override
     public String toString() {

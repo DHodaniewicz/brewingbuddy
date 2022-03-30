@@ -4,21 +4,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.brewingbuddy.entities.Malt;
-import pl.brewingbuddy.entities.Recipe;
-import pl.brewingbuddy.entities.RecipeMalt;
+import pl.brewingbuddy.entities.*;
 import pl.brewingbuddy.pojo.BasicParamsPojo;
 import pl.brewingbuddy.pojo.RecipeHopPojo;
 import pl.brewingbuddy.pojo.RecipeMaltPojo;
 import pl.brewingbuddy.pojo.TestPojo;
-import pl.brewingbuddy.repositories.BeetStyleRepository;
-import pl.brewingbuddy.repositories.MaltRepository;
-import pl.brewingbuddy.repositories.RecipeMaltRepository;
-import pl.brewingbuddy.repositories.RecipeRepository;
+import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeMaltService;
 import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequestMapping("/recipe")
 @RestController
@@ -29,40 +25,24 @@ public class RestRecipeController {
     BeetStyleRepository beetStyleRepository;
     MaltRepository maltRepository;
     RecipeMaltRepository recipeMaltRepository;
+    HopRepository hopRepository;
+    RecipeHopRepository recipeHopRepository;
 
     @Autowired
-    public RestRecipeController(RecipeService recipeService, RecipeMaltService recipeMaltService, RecipeRepository recipeRepository, BeetStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository) {
+    public RestRecipeController(RecipeService recipeService, RecipeMaltService recipeMaltService, RecipeRepository recipeRepository, BeetStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, HopRepository hopRepository, RecipeHopRepository recipeHopRepository) {
         this.recipeService = recipeService;
         this.recipeMaltService = recipeMaltService;
         this.recipeRepository = recipeRepository;
         this.beetStyleRepository = beetStyleRepository;
         this.maltRepository = maltRepository;
         this.recipeMaltRepository = recipeMaltRepository;
-    }
-
-    @PostMapping("/value")
-    public String restAdd1Attribute(@RequestBody String data, HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject(data);
-        Double expectedAmountOfBeer;
-        try {
-            expectedAmountOfBeer = Double.parseDouble((String) jsonObject.get("expectedAmountOfBeer"));
-        } catch (JSONException e) {
-            return e.getMessage();
-        }
-        Recipe recipe = recipeRepository.getById(1L);
-        recipe.setExpectedAmountOfBeer(expectedAmountOfBeer);
-        recipeRepository.save(recipe);
-        return expectedAmountOfBeer.toString();
-    }
-
-    @PostMapping("/value2")
-    public Double restAdd2Attribute(@RequestBody TestPojo testPojo) {
-        return testPojo.getExpectedAmountOfBeer();
+        this.hopRepository = hopRepository;
+        this.recipeHopRepository = recipeHopRepository;
     }
 
     @PostMapping("/basicParams")
-    public BasicParamsPojo postBasicParams(@RequestBody BasicParamsPojo basicParamsPojo, HttpServletRequest request) {
-        //Long recipeId = Long.parseLong(request.getSession().getAttribute("recipeId").toString());
+    public BasicParamsPojo postBasicParams(@RequestBody BasicParamsPojo basicParamsPojo, HttpSession session) {
+        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
         Long recipeId = 1L;
         Recipe recipe = recipeService.setBasicParams(recipeId, basicParamsPojo);
         recipeRepository.save(recipe);
@@ -70,23 +50,48 @@ public class RestRecipeController {
     }
 
     @PostMapping("/add/malt")
-    public RecipeMaltPojo addMaltToRecipe(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpServletRequest request) {
-        //Long recipeId = Long.parseLong(request.getSession().getAttribute("recipeId").toString());
+    public RecipeMaltPojo addMaltToRecipe(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
+
+        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
         Long recipeId = 1L;
         Malt malt = maltRepository.getById(recipeMaltPojo.getMaltId());
-        Recipe recipe = recipeRepository.getById(recipeMaltPojo.getRecipeId());
-        Integer amount = recipeMaltPojo.getAmount();
+        Recipe recipe = recipeRepository.getById(recipeId);
+
+        //RecipeMalt recipeMalt = recipeMaltRepository.findRecipeMaltByRecipeAndMalt(recipe, malt);
+        //if (recipeMalt == null) {
+        //    recipeMalt = new RecipeMalt();
+        //} else {
+        //    recipeMaltRepository.delete(recipeMalt);
+        //}
+
         RecipeMalt recipeMalt = new RecipeMalt();
+
+        Integer amount = recipeMaltPojo.getAmount();
         recipeMalt.setRecipe(recipe);
         recipeMalt.setMalt(malt);
         recipeMalt.setAmount(amount);
-        recipeMaltRepository.save(recipeMalt);
+        recipeMaltRepository.save(recipeMalt).getId();
         return recipeMaltPojo;
     }
 
     @PostMapping("/add/hop")
-    public RecipeHopPojo addHopToRecipe(){
-        return null;
+    public RecipeHopPojo addHopToRecipe(@RequestBody RecipeHopPojo recipeHopPojo, HttpSession session){
+        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
+        Long recipeId = 1L;
+        Recipe recipe = recipeRepository.getById(recipeId);
+        Hop hop = hopRepository.getById(recipeHopPojo.getHopId());
+        Integer timeOfBoiling = recipeHopPojo.getTimeOfBoiling();
+        Integer amount = recipeHopPojo.getAmount();
+
+        RecipeHop recipeHop = new RecipeHop();
+        recipeHop.setRecipe(recipe);
+        recipeHop.setHop(hop);
+        recipeHop.setTimeOfBoiling(timeOfBoiling);
+        recipeHop.setAmount(amount);
+
+        recipeHopRepository.save(recipeHop);
+
+        return recipeHopPojo;
     }
 
 

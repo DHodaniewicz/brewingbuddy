@@ -9,6 +9,7 @@ import pl.brewingbuddy.entities.Recipe;
 import pl.brewingbuddy.pojo.BasicParamsPojo;
 import pl.brewingbuddy.repositories.BeetStyleRepository;
 import pl.brewingbuddy.repositories.RecipeRepository;
+import pl.brewingbuddy.repositories.YeastRepository;
 
 @Getter
 @Setter
@@ -17,11 +18,12 @@ import pl.brewingbuddy.repositories.RecipeRepository;
 public class RecipeService {
     RecipeRepository recipeRepository;
     BeetStyleRepository beetStyleRepository;
+    YeastRepository yeastRepository;
 
-@Autowired
-    public RecipeService(RecipeRepository recipeRepository, BeetStyleRepository beetStyleRepository) {
+    public RecipeService(RecipeRepository recipeRepository, BeetStyleRepository beetStyleRepository, YeastRepository yeastRepository) {
         this.recipeRepository = recipeRepository;
         this.beetStyleRepository = beetStyleRepository;
+        this.yeastRepository = yeastRepository;
     }
 
     public Recipe setBasicParams(Long recipeId, BasicParamsPojo basicParamsPojo) {
@@ -33,6 +35,11 @@ public class RecipeService {
         recipe.setVaporisationSpeed(basicParamsPojo.getVaporisationSpeed());
         recipe.setBoilingLoss(basicParamsPojo.getBoilingLoss());
         recipe.setFermentationLoss(basicParamsPojo.getFermentationLoss());
+        recipe.setMeshProcesTime(basicParamsPojo.getMeshProcesTime());
+        recipe.setMeshProcessTemperature(basicParamsPojo.getMeshProcessTemperature());
+        recipe.setWaterMaltRatio(basicParamsPojo.getWaterMaltRatio());
+        recipe.setMeshPerformance(basicParamsPojo.getMeshPerformance());
+        recipe.setYeast(yeastRepository.getById(basicParamsPojo.getBeerStyleId()));
         return recipe;
     }
 }

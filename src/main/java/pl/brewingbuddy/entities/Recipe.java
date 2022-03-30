@@ -31,7 +31,7 @@ public class Recipe {
     private Double boilingLoss;
     private Double fermentationLoss;
     // Gob - calculated
-    private String amountOfBoiledWort;
+    private Double amountOfBoiledWort;
     private Double blgBeforeBoiling;
     private Double amountOfWortAfterBoiling;
     //Fermenting ingredients
