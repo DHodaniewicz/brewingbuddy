@@ -35,7 +35,7 @@ public class Recipe {
     private Double blgBeforeBoiling;
     private Double amountOfWortAfterBoiling;
     //Fermenting ingredients
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<RecipeMalt> recipeMalt;
     // Mesh ingredients -calculated values
     private Double abv;
@@ -50,7 +50,7 @@ public class Recipe {
     private Double waterVolumeForMesh;
     private Double overallMeshVolume;
     //Boiling
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<RecipeHop> recipeHop;
     //Boiling calculated
     private Double ibu;
