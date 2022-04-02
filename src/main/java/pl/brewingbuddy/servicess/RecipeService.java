@@ -5,8 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 import pl.brewingbuddy.entities.Recipe;
+import pl.brewingbuddy.entities.RecipeHop;
 import pl.brewingbuddy.entities.RecipeMalt;
 import pl.brewingbuddy.pojo.BasicParamsPojo;
+import pl.brewingbuddy.pojo.HopUtilization;
 import pl.brewingbuddy.repositories.BeetStyleRepository;
 import pl.brewingbuddy.repositories.RecipeRepository;
 import pl.brewingbuddy.repositories.YeastRepository;
@@ -73,15 +75,18 @@ public class RecipeService {
         return recipe;
     }
 
-    public Double calculateOverallMeshVolume(Set<RecipeMalt>recipeMalts){
+    public Recipe calculateOverallMeshVolume(Recipe recipe){
         Double overallMeshVolume = 0.0;
+         Set <RecipeMalt> recipeMalts = recipe.getRecipeMalt();
+
         if (recipeMalts.isEmpty()) {
-            return overallMeshVolume;
+            return recipe;
         }
         for (RecipeMalt recipeMalt : recipeMalts) {
             overallMeshVolume += recipeMalt.getAmount();
         }
-        return overallMeshVolume;
+        recipe.setOverallMeshVolume(overallMeshVolume);
+        return recipe;
     }
 
     public Recipe calculateWaterVolumeForMesh(Recipe recipe) {
@@ -90,6 +95,16 @@ public class RecipeService {
         }
         Double waterVolumeForMesh = recipe.getOverallMeshVolume() * recipe.getWaterMaltRatio();
         recipe.setWaterVolumeForMesh(waterVolumeForMesh);
+        return recipe;
+    }
+
+    public Recipe calculateWaterVolumeForSparging(Recipe recipe) {
+        if (recipe.getAmountOfBoiledWort() == null || recipe.getWaterVolumeForMesh() == null ) {
+            return recipe;
+        }
+        double waterVolumeForSparging;
+        waterVolumeForSparging = recipe.getAmountOfBoiledWort() - recipe.getWaterVolumeForMesh();
+        recipe.setWaterVolumeForSparging(waterVolumeForSparging);
         return recipe;
     }
 
@@ -141,8 +156,36 @@ public class RecipeService {
         return recipe;
     }
 
+    public Recipe calculateIbu(Recipe recipe) {
+        if (recipe.getRecipeHop().isEmpty() || recipe.getAmountOfBoiledWort() == null) {
+            return recipe;
+        }
 
+        Double ibu = 0.0;
 
+        for(RecipeHop recipeHop : recipe.getRecipeHop()) {
+            ibu += recipeHop.getAmount() * recipeHop.getHop().getAlfaAcid() *
+                    HopUtilization.getHopPercentageUtilization(recipeHop.getTimeOfBoiling()) /
+                    (recipe.getAmountOfBoiledWort() / 1000 * 10);
+        }
+        recipe.setIbu(ibu);
+        return recipe;
+    }
+
+    public Recipe calculateRecipe(Recipe recipe) {
+        recipe = calculateAmountOfBoiledWort(recipe);
+        recipe = calculateAmountOfWortAfterBoiling(recipe);
+        recipe = calculateBlg(recipe);
+        recipe = calculateOverallMeshVolume(recipe);
+        recipe = calculateWaterVolumeForMesh(recipe);
+        recipe = calculateWaterVolumeForSparging(recipe);
+        recipe = calculateBlgBeforeBoiling(recipe);
+        recipe = calculateAbv(recipe);
+        recipe = calculateSrm(recipe);
+        recipe = calculateIbu(recipe);
+        return recipe;
+    }
 
 }
+
 

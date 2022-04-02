@@ -1,0 +1,90 @@
+package pl.brewingbuddy.pojo;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class HopUtilization {
+
+    public static Double getHopPercentageUtilization(int timeOfBoiling) {
+        Map<Integer,Double> hopUtil = new HashMap<>();
+        hopUtil.put(0, 5.00);
+        hopUtil.put(1, 5.11);
+        hopUtil.put(2, 5.22);
+        hopUtil.put(3, 5.33);
+        hopUtil.put(4, 5.44);
+        hopUtil.put(5, 5.56);
+        hopUtil.put(6, 5.67);
+        hopUtil.put(7, 5.78);
+        hopUtil.put(8, 5.89);
+        hopUtil.put(9, 6.00);
+        hopUtil.put(10, 7.50);
+        hopUtil.put(11, 9.00);
+        hopUtil.put(12, 10.50);
+        hopUtil.put(13, 12.00);
+        hopUtil.put(14, 13.50);
+        hopUtil.put(15, 15.00);
+        hopUtil.put(16, 15.40);
+        hopUtil.put(17, 15.80);
+        hopUtil.put(18, 16.20);
+        hopUtil.put(19, 16.60);
+        hopUtil.put(20, 17.00);
+        hopUtil.put(21, 17.40);
+        hopUtil.put(22, 17.80);
+        hopUtil.put(23, 18.20);
+        hopUtil.put(24, 18.60);
+        hopUtil.put(25, 19.00);
+        hopUtil.put(26, 19.42);
+        hopUtil.put(27, 19.83);
+        hopUtil.put(28, 20.25);
+        hopUtil.put(29, 20.67);
+        hopUtil.put(30, 21.08);
+        hopUtil.put(31, 21.50);
+        hopUtil.put(32, 21.92);
+        hopUtil.put(33, 22.33);
+        hopUtil.put(34, 22.75);
+        hopUtil.put(35, 23.17);
+        hopUtil.put(36, 23.58);
+        hopUtil.put(37, 24.00);
+        hopUtil.put(38, 24.20);
+        hopUtil.put(39, 24.40);
+        hopUtil.put(40, 24.60);
+        hopUtil.put(41, 24.80);
+        hopUtil.put(42, 25.00);
+        hopUtil.put(43, 25.20);
+        hopUtil.put(44, 25.40);
+        hopUtil.put(45, 25.60);
+        hopUtil.put(46, 25.80);
+        hopUtil.put(47, 26.00);
+        hopUtil.put(48, 26.20);
+        hopUtil.put(49, 26.40);
+        hopUtil.put(50, 26.60);
+        hopUtil.put(51, 26.80);
+        hopUtil.put(52, 27.00);
+        hopUtil.put(53, 27.38);
+        hopUtil.put(54, 27.75);
+        hopUtil.put(55, 28.13);
+        hopUtil.put(56, 28.50);
+        hopUtil.put(57, 28.88);
+        hopUtil.put(58, 29.25);
+        hopUtil.put(59, 29.63);
+        hopUtil.put(60, 30.00);
+        hopUtil.put(61, 30.27);
+        hopUtil.put(62, 30.53);
+        hopUtil.put(63, 30.80);
+        hopUtil.put(64, 31.07);
+        hopUtil.put(65, 31.33);
+        hopUtil.put(66, 31.60);
+        hopUtil.put(67, 31.87);
+        hopUtil.put(68, 32.13);
+        hopUtil.put(69, 32.40);
+        hopUtil.put(70, 32.67);
+        hopUtil.put(71, 32.93);
+        hopUtil.put(72, 33.20);
+        hopUtil.put(73, 33.47);
+        hopUtil.put(74, 33.73);
+        hopUtil.put(75, 34.00);
+
+        Double hopPercentageUtilization = hopUtil.get(timeOfBoiling);
+        return hopPercentageUtilization;
+    }
+}

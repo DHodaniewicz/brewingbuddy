@@ -49,6 +49,7 @@ public class Recipe {
     //Mesh process - calculated values
     private Double waterVolumeForMesh;
     private Double overallMeshVolume;
+    private Double waterVolumeForSparging;
     //Boiling
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<RecipeHop> recipeHop;

@@ -14,6 +14,7 @@ public class CalculatedParamsPojo {
     private Double amountOfWortAfterBoiling;
     private Double overallMeshVolume;
     private Double waterVolumeForMesh;
+    private Double waterVolumeForSparging;
     private Double abv;
     private Double srm;
     private Double blg;
