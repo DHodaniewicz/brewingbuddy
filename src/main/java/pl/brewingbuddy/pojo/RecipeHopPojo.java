@@ -12,7 +12,7 @@ public class RecipeHopPojo {
     private Long id;
     private Long hopId;
     private Long recipeId;
-    private int timeOfBoiling;
-    private int amount;
+    private Integer timeOfBoiling;
+    private Double amount;
 
 }

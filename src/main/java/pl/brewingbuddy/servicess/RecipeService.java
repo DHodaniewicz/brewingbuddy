@@ -189,7 +189,7 @@ public class RecipeService {
         for(RecipeHop recipeHop : recipe.getRecipeHop()) {
             ibu += recipeHop.getAmount() * recipeHop.getHop().getAlfaAcid() *
                     HopUtilization.getHopPercentageUtilization(recipeHop.getTimeOfBoiling()) /
-                    (recipe.getAmountOfBoiledWort() / 1000 * 10);
+                    (recipe.getAmountOfBoiledWort() * 10);
         }
         recipe.setIbu(ibu);
         return recipe;

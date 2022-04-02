@@ -22,6 +22,6 @@ public class RecipeHop {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
-    private int timeOfBoiling;
-    private int amount;
+    private Integer timeOfBoiling;
+    private Double amount;
 }
