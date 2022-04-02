@@ -2,14 +2,12 @@ package pl.brewingbuddy.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import pl.brewingbuddy.entities.BeerStyle;
 import pl.brewingbuddy.entities.Malt;
 import pl.brewingbuddy.entities.Recipe;
 import pl.brewingbuddy.entities.RecipeMalt;
-import pl.brewingbuddy.repositories.BeetStyleRepository;
+import pl.brewingbuddy.repositories.BeerStyleRepository;
 import pl.brewingbuddy.repositories.MaltRepository;
 import pl.brewingbuddy.repositories.RecipeMaltRepository;
 import pl.brewingbuddy.repositories.RecipeRepository;
@@ -23,13 +21,13 @@ import java.util.List;
 public class RecipeController {
     RecipeService recipeService;
     RecipeRepository recipeRepository;
-    BeetStyleRepository beetStyleRepository;
+    BeerStyleRepository beetStyleRepository;
     MaltRepository maltRepository;
     RecipeMaltRepository recipeMaltRepository;
 
     @Autowired
     public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository,
-                            BeetStyleRepository beetStyleRepository, MaltRepository maltRepository,
+                            BeerStyleRepository beetStyleRepository, MaltRepository maltRepository,
                             RecipeMaltRepository recipeMaltRepository) {
         this.recipeService = recipeService;
         this.recipeRepository = recipeRepository;

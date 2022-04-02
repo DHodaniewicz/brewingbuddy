@@ -1,19 +1,13 @@
 package pl.brewingbuddy.Controllers;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.brewingbuddy.entities.*;
-import pl.brewingbuddy.pojo.BasicParamsPojo;
-import pl.brewingbuddy.pojo.RecipeHopPojo;
-import pl.brewingbuddy.pojo.RecipeMaltPojo;
-import pl.brewingbuddy.pojo.TestPojo;
+import pl.brewingbuddy.pojo.*;
 import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeMaltService;
 import pl.brewingbuddy.servicess.RecipeService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RequestMapping("/recipe")
@@ -22,14 +16,14 @@ public class RestRecipeController {
     RecipeService recipeService;
     RecipeMaltService recipeMaltService;
     RecipeRepository recipeRepository;
-    BeetStyleRepository beetStyleRepository;
+    BeerStyleRepository beetStyleRepository;
     MaltRepository maltRepository;
     RecipeMaltRepository recipeMaltRepository;
     HopRepository hopRepository;
     RecipeHopRepository recipeHopRepository;
 
     @Autowired
-    public RestRecipeController(RecipeService recipeService, RecipeMaltService recipeMaltService, RecipeRepository recipeRepository, BeetStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, HopRepository hopRepository, RecipeHopRepository recipeHopRepository) {
+    public RestRecipeController(RecipeService recipeService, RecipeMaltService recipeMaltService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, HopRepository hopRepository, RecipeHopRepository recipeHopRepository) {
         this.recipeService = recipeService;
         this.recipeMaltService = recipeMaltService;
         this.recipeRepository = recipeRepository;
@@ -41,19 +35,22 @@ public class RestRecipeController {
     }
 
     @PostMapping("/basicParams")
-    public BasicParamsPojo postBasicParams(@RequestBody BasicParamsPojo basicParamsPojo, HttpSession session) {
+    public CalculatedParamsPojo postBasicParams(@RequestBody BasicParamsPojo basicParamsPojo, HttpSession session) {
         //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 1L;
-        Recipe recipe = recipeService.setBasicParams(recipeId, basicParamsPojo);
-        recipeRepository.save(recipe);
-        return basicParamsPojo;
+        Long recipeId = 4L;
+        Recipe recipe = recipeRepository.getById(recipeId);
+        recipe = recipeService.setBasicParams(recipe, basicParamsPojo);
+        recipe = recipeService.calculateRecipe(recipe);
+        recipe = recipeRepository.save(recipe);
+        CalculatedParamsPojo calculatedParamsPojo = recipeService.getCalculatedParams(recipe);
+        return calculatedParamsPojo;
     }
 
     @PostMapping("/add/malt")
     public RecipeMaltPojo addMaltToRecipe(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
 
         //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 1L;
+        Long recipeId = 4L;
         Malt malt = maltRepository.getById(recipeMaltPojo.getMaltId());
         Recipe recipe = recipeRepository.getById(recipeId);
 
@@ -66,7 +63,7 @@ public class RestRecipeController {
 
         RecipeMalt recipeMalt = new RecipeMalt();
 
-        Integer amount = recipeMaltPojo.getAmount();
+        Double amount = recipeMaltPojo.getAmount();
         recipeMalt.setRecipe(recipe);
         recipeMalt.setMalt(malt);
         recipeMalt.setAmount(amount);
@@ -93,6 +90,7 @@ public class RestRecipeController {
 
         return recipeHopPojo;
     }
+
 
 
 }

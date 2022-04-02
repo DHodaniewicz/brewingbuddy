@@ -25,15 +25,15 @@ public class Recipe {
     private BeerStyle beerStyle;
     private boolean isPublic;
     // Gob
-    private Double expectedAmountOfBeer;
-    private Integer timeOfBoiling;
-    private Double vaporisationSpeed;
-    private Double boilingLoss;
-    private Double fermentationLoss;
+    private Double expectedAmountOfBeer; // [L]
+    private Integer timeOfBoiling; // [min]
+    private Double vaporisationSpeed; // [%/h]
+    private Double boilingLoss; // [%]
+    private Double fermentationLoss; // [%]
     // Gob - calculated
-    private Double amountOfBoiledWort;
-    private Double blgBeforeBoiling;
-    private Double amountOfWortAfterBoiling;
+    private Double amountOfBoiledWort; // [L]
+    private Double blgBeforeBoiling; // [blg]
+    private Double amountOfWortAfterBoiling; // [L]
     //Fermenting ingredients
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<RecipeMalt> recipeMalt;
@@ -42,14 +42,14 @@ public class Recipe {
     private Double srm;
     private Double blg;
     //Mesh process
-    private Double meshProcesTime;
-    private Double meshProcessTemperature;
-    private Double waterMaltRatio;
-    private Double meshPerformance;
+    private Double meshProcesTime; // [min]
+    private Double meshProcessTemperature;  // [C deg]
+    private Double waterMaltRatio; //  [L/kg]
+    private Double meshPerformance; // [%]
     //Mesh process - calculated values
-    private Double waterVolumeForMesh;
-    private Double overallMeshVolume;
-    private Double waterVolumeForSparging;
+    private Double waterVolumeForMesh; // [L]
+    private Double overallMeshVolume; // [kg]
+    private Double waterVolumeForSparging; //[L]
     //Boiling
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<RecipeHop> recipeHop;

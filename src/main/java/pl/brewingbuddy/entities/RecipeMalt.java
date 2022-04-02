@@ -22,6 +22,6 @@ public class RecipeMalt {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
-    private int amount;
+    private Double amount;
 
 }
