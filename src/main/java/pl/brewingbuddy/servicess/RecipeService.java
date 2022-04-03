@@ -35,7 +35,9 @@ public class RecipeService {
 
     public Recipe setBasicParams(Recipe recipe, BasicParamsPojo basicParamsPojo) {
         recipe.setName(basicParamsPojo.getName());
-        recipe.setBeerStyle(beerStyleRepository.getById(basicParamsPojo.getBeerStyleId()));
+        if (basicParamsPojo.getBeerStyleId() != null) {
+            recipe.setBeerStyle(beerStyleRepository.getById(basicParamsPojo.getBeerStyleId()));
+        }
         recipe.setExpectedAmountOfBeer(basicParamsPojo.getExpectedAmountOfBeer());
         recipe.setTimeOfBoiling(basicParamsPojo.getTimeOfBoiling());
         recipe.setVaporisationSpeed(basicParamsPojo.getVaporisationSpeed());
@@ -45,7 +47,9 @@ public class RecipeService {
         recipe.setMeshProcessTemperature(basicParamsPojo.getMeshProcessTemperature());
         recipe.setWaterMaltRatio(basicParamsPojo.getWaterMaltRatio());
         recipe.setMeshPerformance(basicParamsPojo.getMeshPerformance());
-        recipe.setYeast(yeastRepository.getById(basicParamsPojo.getBeerStyleId()));
+        if (basicParamsPojo.getYeastId() != null) {
+            recipe.setYeast(yeastRepository.getById(basicParamsPojo.getBeerStyleId()));
+        }
         return recipe;
     }
 

@@ -3,14 +3,8 @@ package pl.brewingbuddy.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pl.brewingbuddy.entities.BeerStyle;
-import pl.brewingbuddy.entities.Malt;
-import pl.brewingbuddy.entities.Recipe;
-import pl.brewingbuddy.entities.RecipeMalt;
-import pl.brewingbuddy.repositories.BeerStyleRepository;
-import pl.brewingbuddy.repositories.MaltRepository;
-import pl.brewingbuddy.repositories.RecipeMaltRepository;
-import pl.brewingbuddy.repositories.RecipeRepository;
+import pl.brewingbuddy.entities.*;
+import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +18,16 @@ public class RecipeController {
     BeerStyleRepository beetStyleRepository;
     MaltRepository maltRepository;
     RecipeMaltRepository recipeMaltRepository;
+    YeastRepository yeastRepository;
 
     @Autowired
-    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository,
-                            BeerStyleRepository beetStyleRepository, MaltRepository maltRepository,
-                            RecipeMaltRepository recipeMaltRepository) {
+    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, YeastRepository yeastRepository) {
         this.recipeService = recipeService;
         this.recipeRepository = recipeRepository;
         this.beetStyleRepository = beetStyleRepository;
         this.maltRepository = maltRepository;
         this.recipeMaltRepository = recipeMaltRepository;
+        this.yeastRepository = yeastRepository;
     }
 
     @GetMapping("/add")
@@ -47,19 +41,18 @@ public class RecipeController {
 
     @GetMapping("/test")
     public String test() {
-        Recipe recipe = recipeRepository.getById(2L);
-        Malt malt = maltRepository.getById(1L);
-        RecipeMalt recipeMalt = new RecipeMalt();
-        recipeMalt.setRecipe(recipe);
-        recipeMalt.setMalt(malt);
-        recipeMaltRepository.save(recipeMalt);
-        return null;
+        return "addRecipe";
     }
 
 
     @ModelAttribute("availableBeerStyles")
     List<BeerStyle> availableBeerStyles() {
         return beetStyleRepository.findAll();
+    }
+
+    @ModelAttribute("availableYeast")
+    List<Yeast> availableYeast() {
+        return yeastRepository.findAll();
     }
 
     @ModelAttribute("availableMalts")
