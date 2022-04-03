@@ -1,21 +1,21 @@
 package pl.brewingbuddy.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.brewingbuddy.converters.RecipeMaltConverter;
 import pl.brewingbuddy.entities.Malt;
 import pl.brewingbuddy.entities.Recipe;
+import pl.brewingbuddy.entities.RecipeHop;
 import pl.brewingbuddy.entities.RecipeMalt;
+import pl.brewingbuddy.pojo.RecipeHopPojo;
 import pl.brewingbuddy.pojo.RecipeMaltPojo;
 import pl.brewingbuddy.repositories.MaltRepository;
 import pl.brewingbuddy.repositories.RecipeMaltRepository;
 import pl.brewingbuddy.repositories.RecipeRepository;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/recipe/malt")
@@ -58,4 +58,37 @@ public class RecipeMaltController {
         recipeMaltPojo = recipeMaltConverter.toPojo(recipeMalt);
         return recipeMaltPojo;
     }
+
+    @PutMapping("/update")
+    public RecipeMaltPojo updateRecipeHop(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
+        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
+        Long recipeId = 4L;
+        RecipeMalt recipeMalt = recipeMaltConverter.toEntity(recipeMaltPojo);
+        recipeMalt = recipeMaltRepository.save(recipeMalt);
+        recipeMaltPojo = recipeMaltConverter.toPojo(recipeMalt);
+        return recipeMaltPojo;
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteRecipeHop(@RequestBody RecipeMaltPojo recipeMaltPojo) {
+        RecipeMalt recipeMalt = recipeMaltConverter.toEntity(recipeMaltPojo);
+        recipeMaltRepository.delete(recipeMalt);
+    }
+
+    @GetMapping("/all")
+    public Set<RecipeMaltPojo> getAllRecipeHop() {
+        Set<RecipeMalt> allRecipeMalt = new HashSet<>();
+        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
+        Long recipeId = 4L;
+        Recipe recipe = recipeRepository.getById(recipeId);
+        allRecipeMalt = recipeMaltRepository.findAllByRecipe(recipe);
+        Set<RecipeMaltPojo> allRecipeMaltPojo = new HashSet<>();
+
+        for(RecipeMalt recipeMalt : allRecipeMalt) {
+            allRecipeMaltPojo.add(recipeMaltConverter.toPojo(recipeMalt));
+        }
+        return allRecipeMaltPojo;
+    }
+
+
 }
