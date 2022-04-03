@@ -42,8 +42,8 @@ public class RestRecipeController {
 
     @PostMapping("/basicParams")
     public CalculatedParamsPojo postBasicParams(@RequestBody BasicParamsPojo basicParamsPojo, HttpSession session) {
-        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 4L;
+        Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
+        //Long recipeId = 4L;
         Recipe recipe = recipeRepository.getById(recipeId);
         recipe = recipeService.setBasicParams(recipe, basicParamsPojo);
         recipe = recipeService.calculateRecipe(recipe);

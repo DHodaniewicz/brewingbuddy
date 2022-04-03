@@ -36,8 +36,8 @@ public class RecipeMaltController {
     @PostMapping("/add")
     public RecipeMaltPojo addMaltToRecipe(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
 
-        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 4L;
+        Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
+        //Long recipeId = 4L;
         Malt malt = maltRepository.getById(recipeMaltPojo.getMaltId());
         Recipe recipe = recipeRepository.getById(recipeId);
 

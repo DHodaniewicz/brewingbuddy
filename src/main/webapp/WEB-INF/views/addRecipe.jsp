@@ -114,9 +114,31 @@
     </ul>
 </div>
 
+<div>
+    <form id="addMaltForm">
+        <h3>Choose malt you want to add: </h3>
+        <div class="mb-3">
+            <label for="selectMalt">Choose type of malt: </label>
+            <select class="form-select" name="yeast" id="selectMalt" form="addMaltForm">
+                <c:forEach items="${availableMalts}" var="malt">
+                    <option value="${malt.id}">${malt.name} </option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="maltAmount"> Amount of malt [kg]: </label>
+            <input type="number" step="0.01" min="0.01" name="amount" id="maltAmount">
+        </div>
+        <button type="submit"> Save</button>
+    </form>
+</div>
+
 
 <script>
     const mainForm = document.getElementById('mainForm');
+    const maltForm = document.getElementById('addMaltForm')
+
+
     const amountOfBoiledWort = document.querySelector('#amountOfBoiledWort')
     const amountOfWortAfterBoiling = document.querySelector('#amountOfWortAfterBoiling')
     const blgBeforeBoiling = document.querySelector('#blgBeforeBoiling')
@@ -187,6 +209,36 @@
             blg.textContent = data.blg;
             ibu.textContent = data.ibu;
         })
+    });
+
+    maltForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const maltId = event.target.querySelector('select').value;
+        const amount = event.target.querySelector('input').value;
+
+        console.log(JSON.stringify({maltId: maltId, amount: amount}))
+
+        fetch(
+            'http://localhost:8080/recipe/malt/add',
+            {
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    maltId: maltId,
+                    amount: amount
+                }),
+                method: 'POST'
+            }
+        ).then(
+            function (resp) {
+                if (!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        ).then(function (data) {
+            console.log(data)
+        })
+
     });
 
 </script>
