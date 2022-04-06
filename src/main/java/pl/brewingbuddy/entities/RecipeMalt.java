@@ -16,7 +16,7 @@ public class RecipeMalt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "MALT_ID")
     private Malt malt;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

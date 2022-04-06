@@ -48,7 +48,7 @@ public class RecipeService {
         recipe.setWaterMaltRatio(basicParamsPojo.getWaterMaltRatio());
         recipe.setMeshPerformance(basicParamsPojo.getMeshPerformance());
         if (basicParamsPojo.getYeastId() != null) {
-            recipe.setYeast(yeastRepository.getById(basicParamsPojo.getBeerStyleId()));
+            recipe.setYeast(yeastRepository.getById(basicParamsPojo.getYeastId()));
         }
         return recipe;
     }

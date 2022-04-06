@@ -13,6 +13,5 @@ public class RecipeMaltPojo {
     private Long maltId;
     private Long recipeId;
     private Double amount;
-
-
+    private String maltName;
 }

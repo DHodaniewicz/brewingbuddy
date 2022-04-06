@@ -134,21 +134,21 @@
 </div>
 
 
+<div>
+    <ul id="recipeMaltList">
+
+    </ul>
+</div>
+
+
+
+
+
 <script>
     const mainForm = document.getElementById('mainForm');
     const maltForm = document.getElementById('addMaltForm')
+    const recipeMaltList = document.getElementById('recipeMaltList')
 
-
-    const amountOfBoiledWort = document.querySelector('#amountOfBoiledWort')
-    const amountOfWortAfterBoiling = document.querySelector('#amountOfWortAfterBoiling')
-    const blgBeforeBoiling = document.querySelector('#blgBeforeBoiling')
-    const overallMeshVolume = document.querySelector('#overallMeshVolume')
-    const waterVolumeForMesh = document.querySelector('#waterVolumeForMesh')
-    const waterVolumeForSparging = document.querySelector('#waterVolumeForSparging')
-    const abv = document.querySelector('#abv')
-    const srm = document.querySelector('#srm')
-    const blg = document.querySelector('#blg')
-    const ibu = document.querySelector('#ibu')
 
     mainForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -167,7 +167,20 @@
         const meshPerformance = formInputs[9].value;
         const yeastId = event.target.querySelector('#yeast').value;
 
-        console.log(JSON.stringify({name: name, expectedAmountOfBeer: expectedAmountOfBeer, beerStyleId: beerStyleId}))
+        console.log(JSON.stringify({
+            name: name,
+            expectedAmountOfBeer: expectedAmountOfBeer,
+            beerStyleId: beerStyleId,
+            timeOfBoiling: timeOfBoiling,
+            vaporisationSpeed: vaporisationSpeed,
+            boilingLoss: boilingLoss,
+            fermentationLoss: fermentationLoss,
+            meshProcesTime: meshProcesTime,
+            meshProcessTemperature: meshProcessTemperature,
+            waterMaltRatio: waterMaltRatio,
+            meshPerformance: meshPerformance,
+            yeastId: yeastId
+        }))
 
         fetch(
             'http://localhost:8080/recipe/basicParams',
@@ -198,16 +211,7 @@
             }
         ).then(function (data) {
             console.log(data)
-            amountOfBoiledWort.textContent = data.amountOfBoiledWort;
-            blgBeforeBoiling.textContent = data.blgBeforeBoiling;
-            amountOfWortAfterBoiling.textContent = data.amountOfWortAfterBoiling;
-            overallMeshVolume.textContent = data.overallMeshVolume;
-            waterVolumeForMesh.textContent = data.waterVolumeForMesh;
-            waterVolumeForSparging.textContent = data.waterVolumeForSparging;
-            abv.textContent = data.abv;
-            srm.textContent = data.srm;
-            blg.textContent = data.blg;
-            ibu.textContent = data.ibu;
+            updateCalculatedParams(data);
         })
     });
 
@@ -237,9 +241,70 @@
             }
         ).then(function (data) {
             console.log(data)
-        })
+          //  const newFormMalt = document.createElement("form");
+          //  const newDiv = document.createElement("div")
+          //  const inputAmount = document.createElement('input')
 
+            const newLi = document.createElement('li');
+            newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount: ' + data.amount + ' [kg]';
+
+            const recipeMaltId = data.id;
+            console.log(recipeMaltId);
+            const deleteButton = document.createElement('button')
+            deleteButton.innerText = 'Delete'
+
+            newLi.appendChild(deleteButton);
+            recipeMaltList.appendChild(newLi);
+
+            deleteButton.addEventListener('click', function () {
+                deleteMaltFromRecipe(recipeMaltId).then(
+                    function () {
+                    deleteButton.parentElement.remove()
+                });
+            });
+        });
     });
+
+    function updateCalculatedParams(data) {
+        const amountOfBoiledWort = document.querySelector('#amountOfBoiledWort')
+        const amountOfWortAfterBoiling = document.querySelector('#amountOfWortAfterBoiling')
+        const blgBeforeBoiling = document.querySelector('#blgBeforeBoiling')
+        const overallMeshVolume = document.querySelector('#overallMeshVolume')
+        const waterVolumeForMesh = document.querySelector('#waterVolumeForMesh')
+        const waterVolumeForSparging = document.querySelector('#waterVolumeForSparging')
+        const abv = document.querySelector('#abv')
+        const srm = document.querySelector('#srm')
+        const blg = document.querySelector('#blg')
+        const ibu = document.querySelector('#ibu')
+
+        amountOfBoiledWort.textContent = data.amountOfBoiledWort;
+        blgBeforeBoiling.textContent = data.blgBeforeBoiling;
+        amountOfWortAfterBoiling.textContent = data.amountOfWortAfterBoiling;
+        overallMeshVolume.textContent = data.overallMeshVolume;
+        waterVolumeForMesh.textContent = data.waterVolumeForMesh;
+        waterVolumeForSparging.textContent = data.waterVolumeForSparging;
+        abv.textContent = data.abv;
+        srm.textContent = data.srm;
+        blg.textContent = data.blg;
+        ibu.textContent = data.ibu;
+    }
+
+    function deleteMaltFromRecipe(recipeMaltId) {
+        return fetch(
+            'http://localhost:8080/recipe/malt/delete/' + recipeMaltId,
+            {
+                method: 'DELETE'
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
 
 </script>
 </body>

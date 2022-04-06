@@ -37,7 +37,6 @@ public class RecipeMaltController {
     public RecipeMaltPojo addMaltToRecipe(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
 
         Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        //Long recipeId = 4L;
         Malt malt = maltRepository.getById(recipeMaltPojo.getMaltId());
         Recipe recipe = recipeRepository.getById(recipeId);
 
@@ -69,10 +68,12 @@ public class RecipeMaltController {
         return recipeMaltPojo;
     }
 
-    @DeleteMapping("/delete")
-    public void deleteRecipeHop(@RequestBody RecipeMaltPojo recipeMaltPojo) {
-        RecipeMalt recipeMalt = recipeMaltConverter.toEntity(recipeMaltPojo);
+    @DeleteMapping("/delete/{recipeMaltId}")
+    public RecipeMaltPojo deleteRecipeHop(@PathVariable Long recipeMaltId) {
+        RecipeMalt recipeMalt = recipeMaltRepository.getById(recipeMaltId);
+        RecipeMaltPojo recipeMaltPojo = recipeMaltConverter.toPojo(recipeMalt);
         recipeMaltRepository.delete(recipeMalt);
+        return recipeMaltPojo;
     }
 
     @GetMapping("/all")

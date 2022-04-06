@@ -27,6 +27,7 @@ public class RecipeMaltConverter {
         recipeMaltPojo.setRecipeId(recipeMalt.getRecipe().getId());
         recipeMaltPojo.setMaltId(recipeMalt.getMalt().getId());
         recipeMaltPojo.setAmount(recipeMalt.getAmount());
+        recipeMaltPojo.setMaltName(recipeMalt.getMalt().getName());
         return recipeMaltPojo;
     }
 
