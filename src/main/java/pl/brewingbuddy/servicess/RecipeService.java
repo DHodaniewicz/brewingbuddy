@@ -68,6 +68,18 @@ public class RecipeService {
         return calculatedParamsPojo;
     }
 
+    public Recipe setBasicParamsOfCreatedRecipe(Recipe recipe) {
+        recipe.setTimeOfBoiling(60);
+        recipe.setVaporisationSpeed(5.0);
+        recipe.setBoilingLoss(5.0);
+        recipe.setFermentationLoss(5.0);
+        recipe.setMeshProcesTime(60.0);
+        recipe.setMeshProcessTemperature(67.0);
+        recipe.setWaterMaltRatio(3.5);
+        recipe.setMeshPerformance(75.0);
+        return recipe;
+    }
+
     public Recipe calculateAmountOfBoiledWort(Recipe recipe) {
         if (recipe.getExpectedAmountOfBeer() == null || recipe.getTimeOfBoiling() == null || recipe.getVaporisationSpeed() == null || recipe.getBoilingLoss() == null) {
             return recipe;
@@ -102,25 +114,32 @@ public class RecipeService {
         return recipe;
     }
 
-    public Recipe calculateOverallMeshVolume(Recipe recipe){
+    public Recipe calculateOverallMeshVolume(Recipe recipe) {
         Double overallMeshVolume = 0.0;
-         Set <RecipeMalt> recipeMalts = recipe.getRecipeMalt();
 
-        if (recipeMalts.isEmpty()) {
+        if (recipe.getWaterVolumeForMesh() == null || recipe.getWaterMaltRatio() == null) {
             return recipe;
         }
-        for (RecipeMalt recipeMalt : recipeMalts) {
-            overallMeshVolume += recipeMalt.getAmount();
+
+            overallMeshVolume = recipe.getWaterVolumeForMesh() + (recipe.getWaterVolumeForMesh() / recipe.getWaterMaltRatio());
+            recipe.setOverallMeshVolume(overallMeshVolume);
+            return recipe;
         }
-        recipe.setOverallMeshVolume(overallMeshVolume);
-        return recipe;
-    }
+
 
     public Recipe calculateWaterVolumeForMesh(Recipe recipe) {
-        if (recipe.getOverallMeshVolume() == null || recipe.getWaterMaltRatio() == null) {
+        Double overallMaltWeight = 0.0;
+        Set <RecipeMalt> recipeMalts = recipe.getRecipeMalt();
+
+        if (recipe.getWaterMaltRatio() == null || recipeMalts.isEmpty()) {
             return recipe;
         }
-        Double waterVolumeForMesh = recipe.getOverallMeshVolume() * recipe.getWaterMaltRatio();
+
+        for (RecipeMalt recipeMalt : recipeMalts) {
+            overallMaltWeight += recipeMalt.getAmount();
+        }
+
+        Double waterVolumeForMesh = overallMaltWeight * recipe.getWaterMaltRatio();
         recipe.setWaterVolumeForMesh(waterVolumeForMesh);
         return recipe;
     }
@@ -203,8 +222,8 @@ public class RecipeService {
         recipe = calculateAmountOfBoiledWort(recipe);
         recipe = calculateAmountOfWortAfterBoiling(recipe);
         recipe = calculateBlg(recipe);
-        recipe = calculateOverallMeshVolume(recipe);
         recipe = calculateWaterVolumeForMesh(recipe);
+        recipe = calculateOverallMeshVolume(recipe);
         recipe = calculateWaterVolumeForSparging(recipe);
         recipe = calculateBlgBeforeBoiling(recipe);
         recipe = calculateAbv(recipe);

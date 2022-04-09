@@ -61,9 +61,7 @@ public class Recipe {
     //Additional ingredients
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeAdditionalIngredient> recipeAdditionalIngredient;
-
     //Notes
     private String notes;
-
-
+    private Boolean isFinished;
 }

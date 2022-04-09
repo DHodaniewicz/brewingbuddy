@@ -2,12 +2,14 @@ package pl.brewingbuddy.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.brewingbuddy.entities.*;
 import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,18 +35,22 @@ public class RecipeController {
     }
 
     @GetMapping("/add")
-    public String viewAddRecipe(HttpServletRequest request) {
+    public String viewAddRecipe(HttpServletRequest request, Model model) {
         Recipe recipe = new Recipe();
         recipe = recipeRepository.save(recipe);
+        recipe = recipeService.setBasicParamsOfCreatedRecipe(recipe);
+        model.addAttribute("newRecipe", recipe);
         request.getSession().setAttribute("recipeId", recipe.getId());
         return "addRecipe";
     }
 
-
-    @GetMapping("/test")
-    public String test() {
-        return "addRecipe";
+    @GetMapping("/all")
+    public String getAllRecipes(Model model) {
+        List<Recipe> allRecipes = recipeRepository.findAll();
+        model.addAttribute("allRecipes", allRecipes);
+        return "allRecipes";
     }
+
 
 
     @ModelAttribute("availableBeerStyles")

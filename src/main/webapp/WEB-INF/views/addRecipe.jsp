@@ -36,36 +36,36 @@
         </div>
         <div class="mb-3">
             <label for="timeOfBoiling"> Time of boiling [min]: </label>
-            <input type="number" min="1" max="120" name="expectedAmountOfBeer" id="timeOfBoiling">
+            <input type="number" min="1" max="120" name="expectedAmountOfBeer" id="timeOfBoiling" value="${newRecipe.timeOfBoiling}">
         </div>
         <div class="mb-3">
             <label for="vaporisationSpeed"> Vaporisation speed [%/h]: </label>
-            <input type="number" min="0" max="100" name="vaporisationSpeed" id="vaporisationSpeed">
+            <input type="number" min="0" max="100" name="vaporisationSpeed" id="vaporisationSpeed" value="${newRecipe.vaporisationSpeed}">
         </div>
         <div class="mb-3">
             <label for="boilingLoss"> Loss during boiling process [%]: </label>
-            <input type="number" min="0" max="100" name="boilingLoss" id="boilingLoss">
+            <input type="number" min="0" max="100" name="boilingLoss" id="boilingLoss" value="${newRecipe.boilingLoss}">
         </div>
         <div class="mb-3">
             <label for="fermentationLoss"> Loss during fermentation process [%]: </label>
-            <input type="number" min="0" max="100" name="fermentationLoss" id="fermentationLoss">
+            <input type="number" min="0" max="100" name="fermentationLoss" id="fermentationLoss" value="${newRecipe.fermentationLoss}">
         </div>
         <h3>Mash process parameters: </h3>
         <div class="mb-3">
             <label for="meshProcesTime"> Mashing process time [min]: </label>
-            <input type="number" min="1" max="120" name="meshProcesTime" id="meshProcesTime">
+            <input type="number" min="1" max="120" name="meshProcesTime" id="meshProcesTime" value="${newRecipe.meshProcesTime}">
         </div>
         <div class="mb-3">
             <label for="meshProcessTemperature"> Mashing process temperature [C]: </label>
-            <input type="number" min="55" max="80" name="meshProcessTemperature" id="meshProcessTemperature">
+            <input type="number" min="55" max="80" name="meshProcessTemperature" id="meshProcessTemperature" value="${newRecipe.meshProcessTemperature}">
         </div>
         <div class="mb-3">
             <label for="waterMaltRatio"> Water to malt ratio [L/kg]: </label>
-            <input type="number" min="1" max="5" step="0.1" name="waterMaltRatio" id="waterMaltRatio">
+            <input type="number" min="1" max="5" step="0.1" name="waterMaltRatio" id="waterMaltRatio" value="${newRecipe.waterMaltRatio}">
         </div>
         <div class="mb-3">
             <label for="meshPerformance"> Mashing process performance [%]: </label>
-            <input type="number" min="1" max="120" name="meshPerformance" id="meshPerformance">
+            <input type="number" min="1" max="120" name="meshPerformance" id="meshPerformance" value="${newRecipe.meshPerformance}">
         </div>
         <div class="mb-3">
             <label for="yeast">Choose type of yeast: </label>
@@ -88,7 +88,7 @@
             Water needed for Sparging: <span id="waterVolumeForSparging"></span> [L]
         </li>
         <li>
-            Overall mash volume:  <span id="overallMeshVolume"></span> [L]
+            Overall mash volume: <span id="overallMeshVolume"></span> [L]
         </li>
         <li>
             Amount of boiled wort: <span id="amountOfBoiledWort"></span> [L]
@@ -112,6 +112,7 @@
             Expected value of ibu: <span id="ibu"></span> [%]
         </li>
     </ul>
+    <button id="refreshButton">Refresh</button>
 </div>
 
 <div>
@@ -129,7 +130,7 @@
             <label for="maltAmount"> Amount of malt [kg]: </label>
             <input type="number" step="0.01" min="0.01" name="amount" id="maltAmount">
         </div>
-        <button type="submit"> Add </button>
+        <button type="submit"> Add</button>
     </form>
 </div>
 
@@ -158,7 +159,7 @@
             <label for="boilingTime"> Time of boiling [min]: </label>
             <input type="number" step="1" min="1" max="75" name="hopAmount" id="boilingTime">
         </div>
-        <button type="submit"> Add </button>
+        <button type="submit"> Add</button>
     </form>
 </div>
 
@@ -168,6 +169,11 @@
     </ul>
 </div>
 
+<div class="d-grid gap-2 col-6">
+    <form method="post" action="">
+        <button class="btn btn-primary" id="saveRecipe" type="submit"> SAVE RECIPE </button>
+    </form>
+</div>
 
 
 <script>
@@ -176,7 +182,6 @@
     const hopForm = document.getElementById('addHopForm')
     const recipeMaltList = document.getElementById('recipeMaltList')
     const recipeHopList = document.getElementById('recipeHopList')
-
 
 
     mainForm.addEventListener('submit', function (event) {
@@ -254,6 +259,8 @@
         addMaltToRecipe(maltId, amount).then(function (data) {
             console.log(data)
             renderNewMalt(data);
+        }).then(function () {
+            getAndUpdateCalculatedParams();
         });
     });
 
@@ -266,9 +273,9 @@
         addHopToRecipe(hopId, amount, timeOfBoiling).then(function (data) {
             console.log(data);
             renderNewHop(data);
+        }).then(function () {
+            getAndUpdateCalculatedParams();
         })
-
-
     })
 
     function updateCalculatedParams(data) {
@@ -303,7 +310,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -324,7 +331,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -345,7 +352,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -357,7 +364,7 @@
         console.log(data)
 
         const newLi = document.createElement('li');
-        newLi.className='list-group-item';
+        newLi.className = 'list-group-item';
         newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount [kg] :';
 
         const maltAmountInput = document.createElement('input');
@@ -372,8 +379,10 @@
         updateButton.innerText = 'Update';
         newLi.appendChild(updateButton);
 
-        updateButton.addEventListener('click',function () {
-            updateMaltFromRecipe(recipeMaltId, maltAmountInput.value)
+        updateButton.addEventListener('click', function () {
+            updateMaltFromRecipe(recipeMaltId, maltAmountInput.value).then(function () {
+                getAndUpdateCalculatedParams();
+            });
         })
 
         const deleteButton = document.createElement('button');
@@ -386,7 +395,9 @@
             deleteMaltFromRecipe(recipeMaltId).then(
                 function () {
                     deleteButton.parentElement.remove()
-                });
+                }).then(function () {
+                getAndUpdateCalculatedParams();
+            });
         });
     }
 
@@ -404,7 +415,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -420,7 +431,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -442,7 +453,7 @@
             }
         ).then(
             function (resp) {
-                if(!resp.ok) {
+                if (!resp.ok) {
                     alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
                 }
                 return resp.json();
@@ -450,50 +461,81 @@
         )
     }
 
+    function renderNewHop(data) {
 
-     function renderNewHop(data) {
+        const recipeHopId = data.id;
+        console.log(recipeHopId);
 
-         const recipeHopId = data.id;
-         console.log(recipeHopId);
+        const newLi = document.createElement('li');
+        newLi.className = 'list-group-item';
+        newLi.innerText = 'id: ' + data.id + ' malt: ' + data.hopName + ' amount [g] :';
 
-         const newLi = document.createElement('li');
-         newLi.className='list-group-item';
-         newLi.innerText = 'id: ' + data.id + ' malt: ' + data.hopName + ' amount [g] :';
+        const hopAmountInput = document.createElement('input');
+        hopAmountInput.value = data.amount;
+        hopAmountInput.type = 'number';
+        newLi.appendChild(hopAmountInput);
 
-         const hopAmountInput = document.createElement('input');
-         hopAmountInput.value = data.amount;
-         hopAmountInput.type = 'number';
-         newLi.appendChild(hopAmountInput);
+        const hopBoilingTimeInput = document.createElement('input');
+        hopBoilingTimeInput.value = data.timeOfBoiling;
+        hopBoilingTimeInput.type = 'number';
+        hopBoilingTimeInput.min = '1';
+        hopBoilingTimeInput.max = '75';
+        hopBoilingTimeInput.step = '1';
+        newLi.appendChild(hopBoilingTimeInput);
 
-         const hopBoilingTimeInput = document.createElement('input');
-         hopBoilingTimeInput.value = data.timeOfBoiling;
-         hopBoilingTimeInput.type = 'number';
-         hopBoilingTimeInput.min = '1';
-         hopBoilingTimeInput.max = '75';
-         hopBoilingTimeInput.step = '1';
-         newLi.appendChild(hopBoilingTimeInput);
+        const updateButton = document.createElement('button')
+        updateButton.innerText = 'Update';
+        newLi.appendChild(updateButton);
 
-         const updateButton = document.createElement('button')
-         updateButton.innerText = 'Update';
-         newLi.appendChild(updateButton);
+        updateButton.addEventListener('click', function () {
+            updateHopFromRecipe(recipeHopId, hopAmountInput.value, hopBoilingTimeInput.value)
+                .then(function () {
+                    getAndUpdateCalculatedParams();
+                });
+        })
 
-         updateButton.addEventListener('click',function () {
-             updateHopFromRecipe(recipeHopId, hopAmountInput.value, hopBoilingTimeInput.value)
-         })
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'Delete';
 
-         const deleteButton = document.createElement('button');
-         deleteButton.innerText = 'Delete';
+        newLi.appendChild(deleteButton);
+        recipeHopList.appendChild(newLi);
 
-         newLi.appendChild(deleteButton);
-         recipeHopList.appendChild(newLi);
-
-         deleteButton.addEventListener('click', function () {
-             deleteHopFromRecipe(recipeHopId).then(
-                 function () {
-                     deleteButton.parentElement.remove()
-                 });
-         });
+        deleteButton.addEventListener('click', function () {
+            deleteHopFromRecipe(recipeHopId).then(
+                function () {
+                    deleteButton.parentElement.remove()
+                }).then(function () {
+                getAndUpdateCalculatedParams();
+            });
+        });
     }
+
+    function getAndUpdateCalculatedParams() {
+        fetch(
+            'http://localhost:8080/recipe/calculated',
+            {
+                method: 'GET'
+            }
+        ).then(
+            function (resp) {
+                if (!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        ).then(function (data) {
+            console.log(data)
+            updateCalculatedParams(data);
+        })
+    }
+
+    const refreshButton = document.getElementById('refreshButton');
+
+    refreshButton.addEventListener('click', function (event) {
+        getAndUpdateCalculatedParams();
+    })
+
+
 
 
 </script>
