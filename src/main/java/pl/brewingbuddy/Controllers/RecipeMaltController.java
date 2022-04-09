@@ -59,17 +59,17 @@ public class RecipeMaltController {
     }
 
     @PutMapping("/update")
-    public RecipeMaltPojo updateRecipeHop(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
+    public RecipeMaltPojo updateRecipeMalt(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
         //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 4L;
-        RecipeMalt recipeMalt = recipeMaltConverter.toEntity(recipeMaltPojo);
+        RecipeMalt recipeMalt = recipeMaltRepository.getById(recipeMaltPojo.getId());
+        recipeMalt.setAmount(recipeMaltPojo.getAmount());
         recipeMalt = recipeMaltRepository.save(recipeMalt);
         recipeMaltPojo = recipeMaltConverter.toPojo(recipeMalt);
         return recipeMaltPojo;
     }
 
     @DeleteMapping("/delete/{recipeMaltId}")
-    public RecipeMaltPojo deleteRecipeHop(@PathVariable Long recipeMaltId) {
+    public RecipeMaltPojo deleteRecipeMalt(@PathVariable Long recipeMaltId) {
         RecipeMalt recipeMalt = recipeMaltRepository.getById(recipeMaltId);
         RecipeMaltPojo recipeMaltPojo = recipeMaltConverter.toPojo(recipeMalt);
         recipeMaltRepository.delete(recipeMalt);

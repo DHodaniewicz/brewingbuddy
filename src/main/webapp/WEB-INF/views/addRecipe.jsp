@@ -246,12 +246,28 @@
           //  const inputAmount = document.createElement('input')
 
             const newLi = document.createElement('li');
-            newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount: ' + data.amount + ' [kg]';
+            newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount [kg] :';
+
+            const maltAmountInput = document.createElement('input');
+            maltAmountInput.value = data.amount;
+            maltAmountInput.type = 'number';
+            newLi.appendChild(maltAmountInput);
+
 
             const recipeMaltId = data.id;
             console.log(recipeMaltId);
-            const deleteButton = document.createElement('button')
-            deleteButton.innerText = 'Delete'
+
+            const updateButton = document.createElement('button')
+            updateButton.innerText = 'Update';
+            newLi.appendChild(updateButton);
+
+            updateButton.addEventListener('click',function () {
+                updateMaltFromRecipe(recipeMaltId, maltAmountInput.value)
+            })
+
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
 
             newLi.appendChild(deleteButton);
             recipeMaltList.appendChild(newLi);
@@ -294,6 +310,27 @@
             'http://localhost:8080/recipe/malt/delete/' + recipeMaltId,
             {
                 method: 'DELETE'
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
+    function updateMaltFromRecipe(recipeMaltId, amount) {
+        return fetch(
+            'http://localhost:8080/recipe/malt/update/',
+            {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: recipeMaltId,
+                    amount: amount
+                }),
             }
         ).then(
             function (resp) {
