@@ -14,5 +14,6 @@ public class RecipeHopPojo {
     private Long recipeId;
     private Integer timeOfBoiling;
     private Double amount;
+    private String hopName;
 
 }

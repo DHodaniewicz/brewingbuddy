@@ -119,7 +119,7 @@
         <h3>Choose malt you want to add: </h3>
         <div class="mb-3">
             <label for="selectMalt">Choose type of malt: </label>
-            <select class="form-select" name="yeast" id="selectMalt" form="addMaltForm">
+            <select class="form-select" name="malt" id="selectMalt" form="addMaltForm">
                 <c:forEach items="${availableMalts}" var="malt">
                     <option value="${malt.id}">${malt.name} </option>
                 </c:forEach>
@@ -129,25 +129,54 @@
             <label for="maltAmount"> Amount of malt [kg]: </label>
             <input type="number" step="0.01" min="0.01" name="amount" id="maltAmount">
         </div>
-        <button type="submit"> Save</button>
+        <button type="submit"> Add </button>
     </form>
 </div>
 
+<div>
+    <ul class="list-group" id="recipeMaltList">
+
+    </ul>
+</div>
 
 <div>
-    <ul id="recipeMaltList">
+    <form id="addHopForm">
+        <h3>Choose hop you want to add: </h3>
+        <div class="mb-3">
+            <label for="selectHop">Choose type of hop: </label>
+            <select class="form-select" name="yeast" id="selectHop" form="addHopForm">
+                <c:forEach items="${availableHops}" var="hop">
+                    <option value="${hop.id}">${hop.name} </option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="hopAmount"> Amount of hop [g]: </label>
+            <input type="number" step="1" min="1" name="hopAmount" id="hopAmount">
+        </div>
+        <div class="mb-3">
+            <label for="boilingTime"> Time of boiling [min]: </label>
+            <input type="number" step="1" min="1" max="75" name="hopAmount" id="boilingTime">
+        </div>
+        <button type="submit"> Add </button>
+    </form>
+</div>
+
+<div>
+    <ul class="list-group" id="recipeHopList">
 
     </ul>
 </div>
 
 
 
-
-
 <script>
     const mainForm = document.getElementById('mainForm');
     const maltForm = document.getElementById('addMaltForm')
+    const hopForm = document.getElementById('addHopForm')
     const recipeMaltList = document.getElementById('recipeMaltList')
+    const recipeHopList = document.getElementById('recipeHopList')
+
 
 
     mainForm.addEventListener('submit', function (event) {
@@ -222,64 +251,25 @@
 
         console.log(JSON.stringify({maltId: maltId, amount: amount}))
 
-        fetch(
-            'http://localhost:8080/recipe/malt/add',
-            {
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    maltId: maltId,
-                    amount: amount
-                }),
-                method: 'POST'
-            }
-        ).then(
-            function (resp) {
-                if (!resp.ok) {
-                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
-                }
-                return resp.json();
-            }
-        ).then(function (data) {
+        addMaltToRecipe(maltId, amount).then(function (data) {
             console.log(data)
-          //  const newFormMalt = document.createElement("form");
-          //  const newDiv = document.createElement("div")
-          //  const inputAmount = document.createElement('input')
-
-            const newLi = document.createElement('li');
-            newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount [kg] :';
-
-            const maltAmountInput = document.createElement('input');
-            maltAmountInput.value = data.amount;
-            maltAmountInput.type = 'number';
-            newLi.appendChild(maltAmountInput);
-
-
-            const recipeMaltId = data.id;
-            console.log(recipeMaltId);
-
-            const updateButton = document.createElement('button')
-            updateButton.innerText = 'Update';
-            newLi.appendChild(updateButton);
-
-            updateButton.addEventListener('click',function () {
-                updateMaltFromRecipe(recipeMaltId, maltAmountInput.value)
-            })
-
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerText = 'Delete';
-
-            newLi.appendChild(deleteButton);
-            recipeMaltList.appendChild(newLi);
-
-            deleteButton.addEventListener('click', function () {
-                deleteMaltFromRecipe(recipeMaltId).then(
-                    function () {
-                    deleteButton.parentElement.remove()
-                });
-            });
+            renderNewMalt(data);
         });
     });
+
+    hopForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const hopId = event.target.querySelector('select').value;
+        const amount = event.target.querySelectorAll('input')[0].value;
+        const timeOfBoiling = event.target.querySelectorAll('input')[0].value;
+
+        addHopToRecipe(hopId, amount, timeOfBoiling).then(function (data) {
+            console.log(data);
+            renderNewHop(data);
+        })
+
+
+    })
 
     function updateCalculatedParams(data) {
         const amountOfBoiledWort = document.querySelector('#amountOfBoiledWort')
@@ -340,6 +330,169 @@
                 return resp.json();
             }
         )
+    }
+
+    function addMaltToRecipe(maltId, amount) {
+        return fetch(
+            'http://localhost:8080/recipe/malt/add/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    maltId: maltId,
+                    amount: amount
+                }),
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
+    function renderNewMalt(data) {
+        console.log(data)
+
+        const newLi = document.createElement('li');
+        newLi.className='list-group-item';
+        newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount [kg] :';
+
+        const maltAmountInput = document.createElement('input');
+        maltAmountInput.value = data.amount;
+        maltAmountInput.type = 'number';
+        newLi.appendChild(maltAmountInput);
+
+        const recipeMaltId = data.id;
+        console.log(recipeMaltId);
+
+        const updateButton = document.createElement('button')
+        updateButton.innerText = 'Update';
+        newLi.appendChild(updateButton);
+
+        updateButton.addEventListener('click',function () {
+            updateMaltFromRecipe(recipeMaltId, maltAmountInput.value)
+        })
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'Delete';
+
+        newLi.appendChild(deleteButton);
+        recipeMaltList.appendChild(newLi);
+
+        deleteButton.addEventListener('click', function () {
+            deleteMaltFromRecipe(recipeMaltId).then(
+                function () {
+                    deleteButton.parentElement.remove()
+                });
+        });
+    }
+
+    function addHopToRecipe(hopId, amount, timeOfBoiling) {
+        return fetch(
+            'http://localhost:8080/recipe/hop/add/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    hopId: hopId,
+                    amount: amount,
+                    timeOfBoiling: timeOfBoiling
+                }),
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
+    function deleteHopFromRecipe(recipeHopId) {
+        return fetch(
+            'http://localhost:8080/recipe/hop/delete/' + recipeHopId,
+            {
+                method: 'DELETE'
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
+    function updateHopFromRecipe(recipeHopId, amount, timeOfBoiling) {
+        return fetch(
+            'http://localhost:8080/recipe/hop/update/',
+            {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: recipeHopId,
+                    amount: amount,
+                    timeOfBoiling: timeOfBoiling
+                }),
+            }
+        ).then(
+            function (resp) {
+                if(!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        )
+    }
+
+
+     function renderNewHop(data) {
+
+         const recipeHopId = data.id;
+         console.log(recipeHopId);
+
+         const newLi = document.createElement('li');
+         newLi.className='list-group-item';
+         newLi.innerText = 'id: ' + data.id + ' malt: ' + data.hopName + ' amount [g] :';
+
+         const hopAmountInput = document.createElement('input');
+         hopAmountInput.value = data.amount;
+         hopAmountInput.type = 'number';
+         newLi.appendChild(hopAmountInput);
+
+         const hopBoilingTimeInput = document.createElement('input');
+         hopBoilingTimeInput.value = data.timeOfBoiling;
+         hopBoilingTimeInput.type = 'number';
+         hopBoilingTimeInput.min = '1';
+         hopBoilingTimeInput.max = '75';
+         hopBoilingTimeInput.step = '1';
+         newLi.appendChild(hopBoilingTimeInput);
+
+         const updateButton = document.createElement('button')
+         updateButton.innerText = 'Update';
+         newLi.appendChild(updateButton);
+
+         updateButton.addEventListener('click',function () {
+             updateHopFromRecipe(recipeHopId, hopAmountInput.value, hopBoilingTimeInput.value)
+         })
+
+         const deleteButton = document.createElement('button');
+         deleteButton.innerText = 'Delete';
+
+         newLi.appendChild(deleteButton);
+         recipeHopList.appendChild(newLi);
+
+         deleteButton.addEventListener('click', function () {
+             deleteHopFromRecipe(recipeHopId).then(
+                 function () {
+                     deleteButton.parentElement.remove()
+                 });
+         });
     }
 
 

@@ -60,7 +60,6 @@ public class RecipeMaltController {
 
     @PutMapping("/update")
     public RecipeMaltPojo updateRecipeMalt(@RequestBody RecipeMaltPojo recipeMaltPojo, HttpSession session) {
-        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
         RecipeMalt recipeMalt = recipeMaltRepository.getById(recipeMaltPojo.getId());
         recipeMalt.setAmount(recipeMaltPojo.getAmount());
         recipeMalt = recipeMaltRepository.save(recipeMalt);

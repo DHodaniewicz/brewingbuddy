@@ -19,15 +19,17 @@ public class RecipeController {
     MaltRepository maltRepository;
     RecipeMaltRepository recipeMaltRepository;
     YeastRepository yeastRepository;
+    HopRepository hopRepository;
 
     @Autowired
-    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, YeastRepository yeastRepository) {
+    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, YeastRepository yeastRepository, HopRepository hopRepository) {
         this.recipeService = recipeService;
         this.recipeRepository = recipeRepository;
         this.beetStyleRepository = beetStyleRepository;
         this.maltRepository = maltRepository;
         this.recipeMaltRepository = recipeMaltRepository;
         this.yeastRepository = yeastRepository;
+        this.hopRepository = hopRepository;
     }
 
     @GetMapping("/add")
@@ -58,6 +60,11 @@ public class RecipeController {
     @ModelAttribute("availableMalts")
     List<Malt> availableMalts() {
         return maltRepository.findAll();
+    }
+
+    @ModelAttribute("availableHops")
+    List<Hop> availableHops() {
+        return hopRepository.findAll();
     }
 
 }

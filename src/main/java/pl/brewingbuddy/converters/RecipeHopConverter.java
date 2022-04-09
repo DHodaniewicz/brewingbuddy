@@ -28,6 +28,7 @@ public class RecipeHopConverter {
         recipeHopPojo.setHopId(recipeHop.getHop().getId());
         recipeHopPojo.setAmount(recipeHop.getAmount());
         recipeHopPojo.setTimeOfBoiling(recipeHop.getTimeOfBoiling());
+        recipeHopPojo.setHopName(recipeHop.getHop().getName());
         return recipeHopPojo;
     }
 
