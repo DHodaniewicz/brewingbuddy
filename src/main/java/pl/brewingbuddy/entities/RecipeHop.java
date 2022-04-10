@@ -19,7 +19,7 @@ public class RecipeHop {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "HOP_ID")
     private Hop hop;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
     private Integer timeOfBoiling;

@@ -15,164 +15,179 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<h1> Add new brewing recipe </h1>
-<div>
-    <form id="mainForm">
-        <div class="mb-3">
-            <label for="name">Name of recipe:</label>
-            <input type="text" name="name" id="name">
-        </div>
-        <div class="mb-3">
-            <label for="expectedAmountOfBeer"> Expected amount of beer [L]: </label>
-            <input type="number" min="1" step="0.1" name="expectedAmountOfBeer" id="expectedAmountOfBeer">
-        </div>
-        <div class="mb-3">
-            <label for="beerStyleId">Choose type of beer: </label>
-            <select class="form-select" name="beerStyleId" id="beerStyleId" form="mainForm">
-                <c:forEach items="${availableBeerStyles}" var="beerStyle">
-                    <option value="${beerStyle.id}">${beerStyle.beerStyle}</option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="timeOfBoiling"> Time of boiling [min]: </label>
-            <input type="number" min="1" max="120" name="expectedAmountOfBeer" id="timeOfBoiling" value="${newRecipe.timeOfBoiling}">
-        </div>
-        <div class="mb-3">
-            <label for="vaporisationSpeed"> Vaporisation speed [%/h]: </label>
-            <input type="number" min="0" max="100" name="vaporisationSpeed" id="vaporisationSpeed" value="${newRecipe.vaporisationSpeed}">
-        </div>
-        <div class="mb-3">
-            <label for="boilingLoss"> Loss during boiling process [%]: </label>
-            <input type="number" min="0" max="100" name="boilingLoss" id="boilingLoss" value="${newRecipe.boilingLoss}">
-        </div>
-        <div class="mb-3">
-            <label for="fermentationLoss"> Loss during fermentation process [%]: </label>
-            <input type="number" min="0" max="100" name="fermentationLoss" id="fermentationLoss" value="${newRecipe.fermentationLoss}">
-        </div>
-        <h3>Mash process parameters: </h3>
-        <div class="mb-3">
-            <label for="meshProcesTime"> Mashing process time [min]: </label>
-            <input type="number" min="1" max="120" name="meshProcesTime" id="meshProcesTime" value="${newRecipe.meshProcesTime}">
-        </div>
-        <div class="mb-3">
-            <label for="meshProcessTemperature"> Mashing process temperature [C]: </label>
-            <input type="number" min="55" max="80" name="meshProcessTemperature" id="meshProcessTemperature" value="${newRecipe.meshProcessTemperature}">
-        </div>
-        <div class="mb-3">
-            <label for="waterMaltRatio"> Water to malt ratio [L/kg]: </label>
-            <input type="number" min="1" max="5" step="0.1" name="waterMaltRatio" id="waterMaltRatio" value="${newRecipe.waterMaltRatio}">
-        </div>
-        <div class="mb-3">
-            <label for="meshPerformance"> Mashing process performance [%]: </label>
-            <input type="number" min="1" max="120" name="meshPerformance" id="meshPerformance" value="${newRecipe.meshPerformance}">
-        </div>
-        <div class="mb-3">
-            <label for="yeast">Choose type of yeast: </label>
-            <select class="form-select" name="yeast" id="yeast" form="mainForm">
-                <c:forEach items="${availableYeast}" var="yeast">
-                    <option value="${yeast.id}">${yeast.name} ${yeast.form} </option>
-                </c:forEach>
-            </select>
-        </div>
-        <button type="submit"> Save</button>
-    </form>
-</div>
+<div class="container-md">
+    <h1> Add new brewing recipe </h1>
+    <div>
+        <form id="mainForm">
+            <div class="mb-3">
+                <label for="name">Name of recipe:</label>
+                <input type="text" name="name" id="name" aria-required="true">
+            </div>
+            <div class="mb-3">
+                <label for="expectedAmountOfBeer"> Expected amount of beer [L]: </label>
+                <input type="number" min="1" step="0.1" name="expectedAmountOfBeer" id="expectedAmountOfBeer" aria-required="true">
+            </div>
+            <div class="mb-3">
+                <label for="beerStyleId">Choose type of beer: </label>
+                <select class="form-select" name="beerStyleId" id="beerStyleId" form="mainForm">
+                    <c:forEach items="${availableBeerStyles}" var="beerStyle">
+                        <option value="${beerStyle.id}">${beerStyle.beerStyle}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="timeOfBoiling"> Time of boiling [min]: </label>
+                <input type="number" min="1" max="120" name="expectedAmountOfBeer" id="timeOfBoiling"
+                       value="${newRecipe.timeOfBoiling}">
+            </div>
+            <div class="mb-3">
+                <label for="vaporisationSpeed"> Vaporisation speed [%/h]: </label>
+                <input type="number" min="0" max="99" name="vaporisationSpeed" id="vaporisationSpeed"
+                       value="${newRecipe.vaporisationSpeed}">
+            </div>
+            <div class="mb-3">
+                <label for="boilingLoss"> Loss during boiling process [%]: </label>
+                <input type="number" min="0" max="99" name="boilingLoss" id="boilingLoss"
+                       value="${newRecipe.boilingLoss}">
+            </div>
+            <div class="mb-3">
+                <label for="fermentationLoss"> Loss during fermentation process [%]: </label>
+                <input type="number" min="0" max="99" name="fermentationLoss" id="fermentationLoss"
+                       value="${newRecipe.fermentationLoss}">
+            </div>
+            <h3>Mash process parameters: </h3>
+            <div class="mb-3">
+                <label for="meshProcesTime"> Mashing process time [min]: </label>
+                <input type="number" min="1" max="120" name="meshProcesTime" id="meshProcesTime"
+                       value="${newRecipe.meshProcesTime}">
+            </div>
+            <div class="mb-3">
+                <label for="meshProcessTemperature"> Mashing process temperature [C]: </label>
+                <input type="number" min="55" max="80" name="meshProcessTemperature" id="meshProcessTemperature"
+                       value="${newRecipe.meshProcessTemperature}">
+            </div>
+            <div class="mb-3">
+                <label for="waterMaltRatio"> Water to malt ratio [L/kg]: </label>
+                <input type="number" min="1" max="5" step="0.1" name="waterMaltRatio" id="waterMaltRatio"
+                       value="${newRecipe.waterMaltRatio}">
+            </div>
+            <div class="mb-3">
+                <label for="meshPerformance"> Mashing process performance [%]: </label>
+                <input type="number" min="1" max="100" name="meshPerformance" id="meshPerformance"
+                       value="${newRecipe.meshPerformance}">
+            </div>
+            <div class="mb-3">
+                <label for="yeast">Choose type of yeast: </label>
+                <select class="form-select" name="yeast" id="yeast" form="mainForm">
+                    <c:forEach items="${availableYeast}" var="yeast">
+                        <option value="${yeast.id}">${yeast.name} ${yeast.form} </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="d-grid gap-2">
+            <button  class="btn btn-primary"  type="submit"> Save basic parameters</button>
+            </div>
+        </form>
+    </div>
 
-<div class="mb2">
-    <ul class="ul">
-        <li>
-            Water needed for Mashing process: <span id="waterVolumeForMesh"></span> [L]
-        </li>
-        <li>
-            Water needed for Sparging: <span id="waterVolumeForSparging"></span> [L]
-        </li>
-        <li>
-            Overall mash volume: <span id="overallMeshVolume"></span> [L]
-        </li>
-        <li>
-            Amount of boiled wort: <span id="amountOfBoiledWort"></span> [L]
-        </li>
-        <li>
-            Wort volume after boiling process: <span id="amountOfWortAfterBoiling"></span> [L]
-        </li>
-        <li>
-            BLG value before boiling process: <span id="blgBeforeBoiling"></span> [blg]
-        </li>
-        <li>
-            BLG on start of fermentation: <span id="blg"></span> [blg]
-        </li>
-        <li>
-            Calculated color of beer: <span id="srm"></span> []
-        </li>
-        <li>
-            Expected alcohol: <span id="abv"></span> [%]
-        </li>
-        <li>
-            Expected value of ibu: <span id="ibu"></span> [%]
-        </li>
-    </ul>
-    <button id="refreshButton">Refresh</button>
-</div>
+    <div class="mb2">
+        <ul class="list-group">
+            <li class="list-group-item">
+                Water needed for Mashing process: <span span class="badge bg-primary" id="waterVolumeForMesh"></span> [L]
+            </li>
+            <li class="list-group-item">
+                Water needed for Sparging: <span class="badge bg-primary" id="waterVolumeForSparging"></span> [L]
+            </li>
+            <li class="list-group-item">
+                Overall mash volume: <span class="badge bg-primary" id="overallMeshVolume"></span> [L]
+            </li>
+            <li  class="list-group-item">
+                Amount of boiled wort: <span class="badge bg-primary" id="amountOfBoiledWort"></span> [L]
+            </li>
+            <li class="list-group-item">
+                Wort volume after boiling process: <span class="badge bg-primary" id="amountOfWortAfterBoiling"></span> [L]
+            </li>
+            <li class="list-group-item">
+                BLG value before boiling process: <span class="badge bg-primary" id="blgBeforeBoiling"></span> [blg]
+            </li>
+            <li class="list-group-item">
+                BLG on start of fermentation: <span class="badge bg-primary" id="blg"></span> [blg]
+            </li>
+            <li class="list-group-item">
+                Calculated color of beer: <span class="badge bg-primary" id="srm"></span> [srm]
+            </li>
+            <li class="list-group-item">
+                Expected alcohol: <span class="badge bg-primary" id="abv"></span> [%]
+            </li>
+            <li class="list-group-item">
+                Expected value of ibu: <span class="badge bg-primary" id="ibu"></span> [ibu]
+            </li>
+        </ul>
+        <button id="refreshButton">Refresh</button>
+    </div>
 
-<div>
-    <form id="addMaltForm">
-        <h3>Choose malt you want to add: </h3>
-        <div class="mb-3">
-            <label for="selectMalt">Choose type of malt: </label>
-            <select class="form-select" name="malt" id="selectMalt" form="addMaltForm">
-                <c:forEach items="${availableMalts}" var="malt">
-                    <option value="${malt.id}">${malt.name} </option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="maltAmount"> Amount of malt [kg]: </label>
-            <input type="number" step="0.01" min="0.01" name="amount" id="maltAmount">
-        </div>
-        <button type="submit"> Add</button>
-    </form>
-</div>
+    <div>
+        <form id="addMaltForm">
+            <h3>Choose malt you want to add: </h3>
+            <div class="mb-3">
+                <label for="selectMalt">Choose type of malt: </label>
+                <select class="form-select" name="malt" id="selectMalt" form="addMaltForm">
+                    <c:forEach items="${availableMalts}" var="malt">
+                        <option value="${malt.id}">${malt.name} </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="maltAmount"> Amount of malt: </label>
+                <input type="number" min="0" step="any" name="amount" id="maltAmount">
+                <span> [kg] </span>
+            </div>
+            <button type="submit"> Add</button>
+        </form>
+    </div>
 
-<div>
-    <ul class="list-group" id="recipeMaltList">
+    <div>
+        <ul class="list-group" id="recipeMaltList">
 
-    </ul>
-</div>
+        </ul>
+    </div>
 
-<div>
-    <form id="addHopForm">
-        <h3>Choose hop you want to add: </h3>
-        <div class="mb-3">
-            <label for="selectHop">Choose type of hop: </label>
-            <select class="form-select" name="yeast" id="selectHop" form="addHopForm">
-                <c:forEach items="${availableHops}" var="hop">
-                    <option value="${hop.id}">${hop.name} </option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="hopAmount"> Amount of hop [g]: </label>
-            <input type="number" step="1" min="1" name="hopAmount" id="hopAmount">
-        </div>
-        <div class="mb-3">
-            <label for="boilingTime"> Time of boiling [min]: </label>
-            <input type="number" step="1" min="1" max="75" name="hopAmount" id="boilingTime">
-        </div>
-        <button type="submit"> Add</button>
-    </form>
-</div>
+    <div>
+        <form id="addHopForm">
+            <h3>Choose hop you want to add: </h3>
+            <div class="mb-3">
+                <label for="selectHop">Choose type of hop: </label>
+                <select class="form-select" name="yeast" id="selectHop" form="addHopForm">
+                    <c:forEach items="${availableHops}" var="hop">
+                        <option value="${hop.id}">${hop.name} </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="hopAmount"> Amount of hop : </label>
+                <input type="number" step="1" min="1" name="hopAmount" id="hopAmount">
+                <span> [g] </span>
+            </div>
+            <div class="mb-3">
+                <label for="boilingTime"> Time of boiling: </label>
+                <input type="number" step="1" min="1" max="75" name="hopAmount" id="boilingTime">
+                <span> [min] </span>
+            </div>
+            <button type="submit"> Add</button>
+        </form>
+    </div>
 
-<div>
-    <ul class="list-group" id="recipeHopList">
+    <div>
+        <ul class="list-group" id="recipeHopList">
 
-    </ul>
-</div>
+        </ul>
+    </div>
 
-<div class="d-grid gap-2 col-6">
-    <form method="post" action="">
-        <button class="btn btn-primary" id="saveRecipe" type="submit"> SAVE RECIPE </button>
-    </form>
+    <div class="d-grid gap-2 col-6">
+        <form method="post" action="">
+            <button class="btn btn-primary" id="saveRecipe" type="submit"> SAVE RECIPE</button>
+        </form>
+    </div>
 </div>
 
 
@@ -268,7 +283,7 @@
         event.preventDefault();
         const hopId = event.target.querySelector('select').value;
         const amount = event.target.querySelectorAll('input')[0].value;
-        const timeOfBoiling = event.target.querySelectorAll('input')[0].value;
+        const timeOfBoiling = event.target.querySelectorAll('input')[1].value;
 
         addHopToRecipe(hopId, amount, timeOfBoiling).then(function (data) {
             console.log(data);
@@ -365,25 +380,27 @@
 
         const newLi = document.createElement('li');
         newLi.className = 'list-group-item';
-        newLi.innerText = 'id: ' + data.id + ' malt: ' + data.maltName + ' amount [kg] :';
+        newLi.innerText = data.maltName + '   ';
 
         const maltAmountInput = document.createElement('input');
         maltAmountInput.value = data.amount;
         maltAmountInput.type = 'number';
+        maltAmountInput.min = '0';
+        maltAmountInput.step = '0.01'
         newLi.appendChild(maltAmountInput);
 
-        const recipeMaltId = data.id;
-        console.log(recipeMaltId);
+        const maltUnitSpan = document.createElement('span');
+        maltUnitSpan.innerText = ' [kg] '
+        newLi.appendChild(maltUnitSpan)
 
-        const updateButton = document.createElement('button')
-        updateButton.innerText = 'Update';
-        newLi.appendChild(updateButton);
-
-        updateButton.addEventListener('click', function () {
+        maltAmountInput.addEventListener('blur', function () {
             updateMaltFromRecipe(recipeMaltId, maltAmountInput.value).then(function () {
                 getAndUpdateCalculatedParams();
             });
         })
+
+        const recipeMaltId = data.id;
+        console.log(recipeMaltId);
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
@@ -468,12 +485,25 @@
 
         const newLi = document.createElement('li');
         newLi.className = 'list-group-item';
-        newLi.innerText = 'id: ' + data.id + ' malt: ' + data.hopName + ' amount [g] :';
+        newLi.innerText = data.hopName + '   ';
 
         const hopAmountInput = document.createElement('input');
         hopAmountInput.value = data.amount;
         hopAmountInput.type = 'number';
+        hopAmountInput.min = '1';
+        hopAmountInput.step = '1';
         newLi.appendChild(hopAmountInput);
+
+        const hopAmountUnitSpan = document.createElement('span')
+        hopAmountUnitSpan.innerText = ' [g] '
+        newLi.appendChild(hopAmountUnitSpan)
+
+        hopAmountInput.addEventListener('blur', function () {
+            updateHopFromRecipe(recipeHopId, hopAmountInput.value, hopBoilingTimeInput.value)
+                .then(function () {
+                    getAndUpdateCalculatedParams();
+                });
+        })
 
         const hopBoilingTimeInput = document.createElement('input');
         hopBoilingTimeInput.value = data.timeOfBoiling;
@@ -483,11 +513,11 @@
         hopBoilingTimeInput.step = '1';
         newLi.appendChild(hopBoilingTimeInput);
 
-        const updateButton = document.createElement('button')
-        updateButton.innerText = 'Update';
-        newLi.appendChild(updateButton);
+        const hopBoilingTimeUnitSpan = document.createElement('span');
+        hopBoilingTimeUnitSpan.innerText = ' [min] ';
+        newLi.appendChild(hopBoilingTimeUnitSpan);
 
-        updateButton.addEventListener('click', function () {
+        hopBoilingTimeInput.addEventListener('blur', function () {
             updateHopFromRecipe(recipeHopId, hopAmountInput.value, hopBoilingTimeInput.value)
                 .then(function () {
                     getAndUpdateCalculatedParams();
@@ -534,8 +564,6 @@
     refreshButton.addEventListener('click', function (event) {
         getAndUpdateCalculatedParams();
     })
-
-
 
 
 </script>

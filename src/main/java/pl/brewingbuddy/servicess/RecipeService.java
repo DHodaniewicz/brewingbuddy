@@ -150,6 +150,9 @@ public class RecipeService {
         }
         double waterVolumeForSparging;
         waterVolumeForSparging = recipe.getAmountOfBoiledWort() - recipe.getWaterVolumeForMesh();
+        if (waterVolumeForSparging < 0) {
+            waterVolumeForSparging = 0;
+        }
         recipe.setWaterVolumeForSparging(waterVolumeForSparging);
         return recipe;
     }
@@ -180,6 +183,11 @@ public class RecipeService {
         final Double finalBlg = 2.5;
 
         Double abv = (recipe.getBlg() - 2.5) * parameter;
+
+        if(abv < 0) {
+            abv = 0.0;
+        }
+
         recipe.setAbv(abv);
         return recipe;
     }

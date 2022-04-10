@@ -19,7 +19,7 @@ public class RecipeMalt {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "MALT_ID")
     private Malt malt;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "RECIPE_ID")
     private Recipe recipe;
     private Double amount;
