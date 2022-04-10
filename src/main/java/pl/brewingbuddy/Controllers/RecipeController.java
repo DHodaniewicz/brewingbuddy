@@ -65,6 +65,14 @@ public class RecipeController {
         return "recipeDetails";
     }
 
+    @GetMapping("/update/{id}")
+    public String updateRecipe(@PathVariable Long id, Model model, HttpServletRequest request) {
+        request.getSession().setAttribute("recipeId", id);
+        Recipe recipe = recipeRepository.getById(id);
+        model.addAttribute("newRecipe", recipe);
+        return "updateRecipe";
+    }
+
 
     @ModelAttribute("availableBeerStyles")
     List<BeerStyle> availableBeerStyles() {

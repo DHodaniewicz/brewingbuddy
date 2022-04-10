@@ -76,12 +76,10 @@ public class RecipeMaltController {
     }
 
     @GetMapping("/all")
-    public Set<RecipeMaltPojo> getAllRecipeHop() {
-        Set<RecipeMalt> allRecipeMalt = new HashSet<>();
-        //Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
-        Long recipeId = 4L;
+    public Set<RecipeMaltPojo> getAllRecipeHop(HttpSession session) {
+        Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
         Recipe recipe = recipeRepository.getById(recipeId);
-        allRecipeMalt = recipeMaltRepository.findAllByRecipe(recipe);
+        Set<RecipeMalt> allRecipeMalt = recipeMaltRepository.findAllByRecipe(recipe);
         Set<RecipeMaltPojo> allRecipeMaltPojo = new HashSet<>();
 
         for(RecipeMalt recipeMalt : allRecipeMalt) {

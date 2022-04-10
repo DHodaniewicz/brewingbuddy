@@ -70,10 +70,9 @@ public class RecipeHopController {
 
     @GetMapping("/all")
     public Set<RecipeHopPojo> getAllRecipeHop(HttpSession session) {
-        Set<RecipeHop> allRecipeHop = new HashSet<>();
         Long recipeId = Long.parseLong(session.getAttribute("recipeId").toString());
         Recipe recipe = recipeRepository.getById(recipeId);
-        allRecipeHop = recipeHopRepository.findAllByRecipe(recipe);
+        Set<RecipeHop> allRecipeHop = recipeHopRepository.findAllByRecipe(recipe);
         Set<RecipeHopPojo> allRecipeHopPojo = new HashSet<>();
 
         for(RecipeHop recipeHop : allRecipeHop) {
