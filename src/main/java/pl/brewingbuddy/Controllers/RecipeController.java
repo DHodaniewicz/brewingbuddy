@@ -9,6 +9,7 @@ import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.GroupSequence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,18 @@ public class RecipeController {
         return "allRecipes";
     }
 
+    @GetMapping("/all/filter")
+    public String getFilteredRecipes(@RequestParam Long beerStyleId, Model model) {
+        List <Recipe> filteredRecipes = recipeRepository.findAllByBeerStyle(beetStyleRepository.getById(beerStyleId));
+        model.addAttribute("allRecipes", filteredRecipes);
+        return "allRecipes";
+    }
+
+    @GetMapping("/details/{id}")
+    public String getRecipeDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("recipeDetails", recipeRepository.getById(id));
+        return "recipeDetails";
+    }
 
 
     @ModelAttribute("availableBeerStyles")

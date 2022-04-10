@@ -15,18 +15,42 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<h1>All available recipes: </h1>
-<ol class="list-group list-group-numbered">
-    <%--@elvariable id="recipe" type="pl.brewingbuddy.entities.Recipe"--%>
-    <c:forEach items="${allRecipes}" var="recipe">
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">${recipe.name}</div>
-                <div>${recipe.beerStyle.beerStyle} </div>
-                <div>Blg: ${recipe.blg} Ibu: ${recipe.ibu}</div>
-            </div>
-        </li>
-    </c:forEach>
-</ol>
+
+
+<div class="container">
+    <h1>All available recipes: </h1>
+    <form method="get" action="/recipe/all/filter" id="beerStyleForm">
+        <label for="beerStyleId">Filter recipe list</label>
+        <select class="form-select" name="beerStyleId" id="beerStyleId" form="beerStyleForm">
+            <c:forEach items="${availableBeerStyles}" var="beerStyle">
+                <option value="${beerStyle.id}">${beerStyle.beerStyle}</option>
+            </c:forEach>
+        </select>
+        <button class="btn btn-primary" type="submit"> Filter</button>
+    </form>
+    <form action="/recipe/all" method="get">
+        <button class="btn btn-primary"> Remove filter </button>
+    </form>
+</div>
+
+<div class="container-md">
+    <ol class="list-group list-group-numbered">
+        <%--@elvariable id="recipe" type="pl.brewingbuddy.entities.Recipe"--%>
+        <c:forEach items="${allRecipes}" var="recipe">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="list-group-horizontal-md">
+                        <div class="fw-bold">${recipe.name}</div>
+                        <div>${recipe.beerStyle.beerStyle} </div>
+                        <div>Blg: ${recipe.blg} Ibu: ${recipe.ibu}</div>
+                    </div>
+                    <div class="list-group-horizontal-md">
+                        <a href="/recipe/details/${recipe.id}"><button class="btn btn-primary btn-lg"> Details </button></a>
+                    </div>
+                </div>
+            </li>
+        </c:forEach>
+    </ol>
+</div>
 </body>
 </html>
