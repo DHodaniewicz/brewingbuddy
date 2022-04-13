@@ -26,13 +26,22 @@
             </div>
             <div class="mb-3">
                 <label for="expectedAmountOfBeer"> Expected amount of beer [L]: </label>
-                <input value="${newRecipe.expectedAmountOfBeer}" type="number" min="1" step="0.1" name="expectedAmountOfBeer" id="expectedAmountOfBeer" aria-required="true">
+                <input value="${newRecipe.expectedAmountOfBeer}" type="number" min="1" step="0.1"
+                       name="expectedAmountOfBeer" id="expectedAmountOfBeer" aria-required="true">
             </div>
             <div class="mb-3">
                 <label for="beerStyleId">Choose type of beer: </label>
-                <select value="${newRecipe.beerStyle.id}" class="form-select" name="beerStyleId" id="beerStyleId" form="mainForm">
+                <select value="${newRecipe.beerStyle.id}" class="form-select" name="beerStyleId" id="beerStyleId"
+                        form="mainForm">
                     <c:forEach items="${availableBeerStyles}" var="beerStyle">
-                        <option value="${beerStyle.id}">${beerStyle.beerStyle}</option>
+                        <c:choose>
+                            <c:when test="${newRecipe.beerStyle.id == beerStyle.id}">
+                                <option selected="selected" value="${beerStyle.id}">${beerStyle.beerStyle}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${beerStyle.id}">${beerStyle.beerStyle}</option>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                 </select>
             </div>
@@ -81,12 +90,19 @@
                 <label for="yeast">Choose type of yeast: </label>
                 <select value="${newRecipe.yeast.id}" class="form-select" name="yeast" id="yeast" form="mainForm">
                     <c:forEach items="${availableYeast}" var="yeast">
-                        <option value="${yeast.id}">${yeast.name} ${yeast.form} </option>
+                        <c:choose>
+                            <c:when test="${newRecipe.yeast.id == yeast.id}">
+                                <option selected="selected" value="${yeast.id}">${yeast.name} ${yeast.form} </option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${yeast.id}">${yeast.name} ${yeast.form} </option>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                 </select>
             </div>
             <div class="d-grid gap-2">
-            <button  class="btn btn-primary"  type="submit"> Save basic parameters</button>
+                <button class="btn btn-primary" type="submit"> Save basic parameters</button>
             </div>
         </form>
     </div>
@@ -94,7 +110,8 @@
     <div class="mb2">
         <ul class="list-group">
             <li class="list-group-item">
-                Water needed for Mashing process: <span span class="badge bg-primary" id="waterVolumeForMesh"></span> [L]
+                Water needed for Mashing process: <span span class="badge bg-primary" id="waterVolumeForMesh"></span>
+                [L]
             </li>
             <li class="list-group-item">
                 Water needed for Sparging: <span class="badge bg-primary" id="waterVolumeForSparging"></span> [L]
@@ -102,11 +119,12 @@
             <li class="list-group-item">
                 Overall mash volume: <span class="badge bg-primary" id="overallMeshVolume"></span> [L]
             </li>
-            <li  class="list-group-item">
+            <li class="list-group-item">
                 Amount of boiled wort: <span class="badge bg-primary" id="amountOfBoiledWort"></span> [L]
             </li>
             <li class="list-group-item">
-                Wort volume after boiling process: <span class="badge bg-primary" id="amountOfWortAfterBoiling"></span> [L]
+                Wort volume after boiling process: <span class="badge bg-primary" id="amountOfWortAfterBoiling"></span>
+                [L]
             </li>
             <li class="list-group-item">
                 BLG value before boiling process: <span class="badge bg-primary" id="blgBeforeBoiling"></span> [blg]
@@ -560,14 +578,10 @@
         })
     }
 
-    const refreshButton = document.getElementById('refreshButton');
-
-    refreshButton.addEventListener('click', function (event) {
-        getAndUpdateCalculatedParams();
-    })
 
     document.addEventListener('DOMContentLoaded', function () {
         getAllMalts();
+        getAllHops();
     })
 
 
@@ -592,8 +606,26 @@
         })
     }
 
-
-
+    function getAllHops() {
+        return fetch(
+            'http://localhost:8080/recipe/hop/all',
+            {
+                method: 'GET',
+            }
+        ).then(
+            function (resp) {
+                if (!resp.ok) {
+                    alert('Wystąpił błąd! Otwórz devtools i zakładkę Sieć/Network, i poszukaj przyczyny');
+                }
+                return resp.json();
+            }
+        ).then(function (data) {
+            console.log(data);
+            data.forEach(element => {
+                renderNewHop(element);
+            })
+        })
+    }
 
 </script>
 </body>
