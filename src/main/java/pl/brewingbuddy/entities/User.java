@@ -16,8 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
-    @OneToMany(mappedBy = "user")
+    private String username;
+    private String email;
+    private String password;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Recipe> recipes;
-
 }
