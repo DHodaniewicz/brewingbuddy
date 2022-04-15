@@ -1,6 +1,5 @@
 package pl.brewingbuddy.Controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,6 @@ import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.GroupSequence;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -58,7 +55,7 @@ public class RecipeController {
 
     @GetMapping("/my-recipes")
     public String getMyRecipes(HttpSession session, Model model) {
-        List<Recipe> myRecipes = recipeRepository.findAllByUserId((Long) session.getAttribute("userId"));
+        List<Recipe> myRecipes = recipeRepository.findAllByUserId(Long.parseLong(String.valueOf((Integer) session.getAttribute("userId"))));
         model.addAttribute("myRecipes", myRecipes);
         return "myRecipes";
     }
