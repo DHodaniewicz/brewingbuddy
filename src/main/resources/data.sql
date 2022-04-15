@@ -15,12 +15,13 @@ insert into yeast(id, form, laboratory, name) VALUES (1, 'dry', 'Safale', 'US-05
 insert into additional_ingredient(id, name) VALUES (1, 'aromat cytrynowy'),
                                                    (2, 'ziarna kawy');
 
-insert into users (id, login) VALUES (1, 'danny');
 
 insert into beer_style (id, beer_style) VALUES (1, 'Barley wine'), (2, 'Bock'), (3, 'Gose'),
                                                (4, 'Pils'), (5, 'Pale Ale'), (6, 'Porter'),
                                                (7, 'Stout');
 
 INSERT INTO `role` (`id`, `name`) VALUES (NULL, 'ROLE_USER');
+
+INSERT INTO users (email, enabled, username)  VALUES ('d.hodaniewicz@gmail.com', 1, 'Danny')
 
 

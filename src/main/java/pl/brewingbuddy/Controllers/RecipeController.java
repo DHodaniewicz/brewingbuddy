@@ -9,6 +9,7 @@ import pl.brewingbuddy.repositories.*;
 import pl.brewingbuddy.servicess.RecipeService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.GroupSequence;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,9 @@ public class RecipeController {
     RecipeMaltRepository recipeMaltRepository;
     YeastRepository yeastRepository;
     HopRepository hopRepository;
+    UserRepository userRepository;
 
-    @Autowired
-    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, YeastRepository yeastRepository, HopRepository hopRepository) {
+    public RecipeController(RecipeService recipeService, RecipeRepository recipeRepository, BeerStyleRepository beetStyleRepository, MaltRepository maltRepository, RecipeMaltRepository recipeMaltRepository, YeastRepository yeastRepository, HopRepository hopRepository, UserRepository userRepository) {
         this.recipeService = recipeService;
         this.recipeRepository = recipeRepository;
         this.beetStyleRepository = beetStyleRepository;
@@ -33,15 +34,18 @@ public class RecipeController {
         this.recipeMaltRepository = recipeMaltRepository;
         this.yeastRepository = yeastRepository;
         this.hopRepository = hopRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/add")
-    public String viewAddRecipe(HttpServletRequest request, Model model) {
+    public String viewAddRecipe(HttpSession session, Model model) {
         Recipe recipe = new Recipe();
+        User user = userRepository.getById(Long.parseLong(String.valueOf((Integer) session.getAttribute("userId"))));
+        recipe.setUser(user);
         recipe = recipeRepository.save(recipe);
         recipe = recipeService.setBasicParamsOfCreatedRecipe(recipe);
         model.addAttribute("newRecipe", recipe);
-        request.getSession().setAttribute("recipeId", recipe.getId());
+        session.setAttribute("recipeId", recipe.getId());
         return "addRecipe";
     }
 
@@ -50,6 +54,13 @@ public class RecipeController {
         List<Recipe> allRecipes = recipeRepository.findAll();
         model.addAttribute("allRecipes", allRecipes);
         return "allRecipes";
+    }
+
+    @GetMapping("/my-recipes")
+    public String getMyRecipes(HttpSession session, Model model) {
+        List<Recipe> myRecipes = recipeRepository.findAllByUserId((Long) session.getAttribute("userId"));
+        model.addAttribute("myRecipes", myRecipes);
+        return "myRecipes";
     }
 
     @GetMapping("/all/filter")
