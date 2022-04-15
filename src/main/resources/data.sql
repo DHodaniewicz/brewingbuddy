@@ -21,4 +21,6 @@ insert into beer_style (id, beer_style) VALUES (1, 'Barley wine'), (2, 'Bock'), 
                                                (4, 'Pils'), (5, 'Pale Ale'), (6, 'Porter'),
                                                (7, 'Stout');
 
+INSERT INTO `role` (`id`, `name`) VALUES (NULL, 'ROLE_USER');
+
 

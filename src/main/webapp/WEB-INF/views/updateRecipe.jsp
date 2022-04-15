@@ -254,6 +254,7 @@
             'http://localhost:8080/recipe/basicParams',
             {
                 headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
                 body: JSON.stringify({
                     name: name,
                     expectedAmountOfBeer: expectedAmountOfBeer,
