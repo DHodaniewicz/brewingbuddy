@@ -15,6 +15,8 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+<%@ include file="/headerMenu.jsp" %>
+
 <%--@elvariable id="newRecipe" type="pl.brewingbuddy.entities.Recipe"--%>
 <div class="container-md">
     <h1> Add new brewing recipe </h1>
@@ -254,6 +256,7 @@
             'http://localhost:8080/recipe/basicParams',
             {
                 headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
                 body: JSON.stringify({
                     name: name,
                     expectedAmountOfBeer: expectedAmountOfBeer,
