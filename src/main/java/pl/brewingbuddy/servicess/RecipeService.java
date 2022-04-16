@@ -50,6 +50,7 @@ public class RecipeService {
         if (basicParamsPojo.getYeastId() != null) {
             recipe.setYeast(yeastRepository.getById(basicParamsPojo.getYeastId()));
         }
+        recipe.setPublic(basicParamsPojo.getIsPublic());
         return recipe;
     }
 

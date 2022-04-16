@@ -89,6 +89,10 @@
                        value="${newRecipe.meshPerformance}">
             </div>
             <div class="mb-3">
+                <label for="isPublic"> Is this a public recipe? </label>
+                <input type="checkbox" name="isPublic" id="isPublic">
+            </div>
+            <div class="mb-3">
                 <label for="yeast">Choose type of yeast: </label>
                 <select value="${newRecipe.yeast.id}" class="form-select" name="yeast" id="yeast" form="mainForm">
                     <c:forEach items="${availableYeast}" var="yeast">
@@ -237,6 +241,14 @@
         const meshPerformance = formInputs[9].value;
         const yeastId = event.target.querySelector('#yeast').value;
 
+        let isPublic;
+        if (formInputs[10].checked == true) {
+            isPublic = true;
+        }
+        else {
+            isPublic = false;
+        }
+
         console.log(JSON.stringify({
             name: name,
             expectedAmountOfBeer: expectedAmountOfBeer,
@@ -249,6 +261,7 @@
             meshProcessTemperature: meshProcessTemperature,
             waterMaltRatio: waterMaltRatio,
             meshPerformance: meshPerformance,
+            isPublic: isPublic,
             yeastId: yeastId
         }))
 
@@ -269,6 +282,7 @@
                     meshProcessTemperature: meshProcessTemperature,
                     waterMaltRatio: waterMaltRatio,
                     meshPerformance: meshPerformance,
+                    isPublic: isPublic,
                     yeastId: yeastId
                 }),
                 method: 'POST'

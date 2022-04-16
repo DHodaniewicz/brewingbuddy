@@ -63,5 +63,5 @@ public class Recipe {
     private Set<RecipeAdditionalIngredient> recipeAdditionalIngredient;
     //Notes
     private String notes;
-    private Boolean isFinished;
+    private boolean isFinished;
 }

@@ -20,6 +20,7 @@ public class BasicParamsPojo {
     private Double waterMaltRatio;
     private Double meshPerformance;
     private Long yeastId;
+    private Boolean isPublic;
 
     @Override
     public String toString() {
