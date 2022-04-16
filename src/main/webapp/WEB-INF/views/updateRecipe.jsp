@@ -148,7 +148,6 @@
                 Expected value of ibu: <span class="badge bg-primary" id="ibu"></span> [ibu]
             </li>
         </ul>
-        <button id="refreshButton">Refresh</button>
     </div>
 
     <div>
@@ -440,6 +439,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
+        deleteButton.className="btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeMaltList.appendChild(newLi);
@@ -562,6 +562,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
+        deleteButton.className="btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeHopList.appendChild(newLi);

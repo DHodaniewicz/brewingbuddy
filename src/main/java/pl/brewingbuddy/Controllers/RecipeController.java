@@ -50,6 +50,7 @@ public class RecipeController {
     @GetMapping("/all")
     public String getAllRecipes(Model model) {
         List<Recipe> allRecipes = recipeRepository.findAllByIsPublic(true);
+        allRecipes = recipeService.roundRecipeValues(allRecipes);
         model.addAttribute("allRecipes", allRecipes);
         return "allRecipes";
     }
@@ -57,6 +58,7 @@ public class RecipeController {
     @GetMapping("/my-recipes")
     public String getMyRecipes(HttpSession session, Model model) {
         List<Recipe> myRecipes = recipeRepository.findAllByUserId(Long.valueOf((Integer) session.getAttribute("userId")));
+        myRecipes = recipeService.roundRecipeValues(myRecipes);
         model.addAttribute("myRecipes", myRecipes);
         return "myRecipes";
     }
@@ -64,13 +66,14 @@ public class RecipeController {
     @GetMapping("/all/filter")
     public String getFilteredRecipes(@RequestParam Long beerStyleId, Model model) {
         List <Recipe> filteredRecipes = recipeRepository.findAllByIsPublicAndBeerStyle(true, beetStyleRepository.getById(beerStyleId));
+        filteredRecipes = recipeService.roundRecipeValues(filteredRecipes);
         model.addAttribute("allRecipes", filteredRecipes);
         return "allRecipes";
     }
 
     @GetMapping("/details/{id}")
     public String getRecipeDetails(@PathVariable Long id, Model model) {
-        model.addAttribute("recipeDetails", recipeRepository.getById(id));
+        model.addAttribute("recipeDetails", recipeService.roundRecipeDetailsValues(recipeRepository.getById(id)));
         return "recipeDetails";
     }
 

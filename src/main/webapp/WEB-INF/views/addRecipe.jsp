@@ -420,6 +420,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
+        deleteButton.className="btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeMaltList.appendChild(newLi);
@@ -542,6 +543,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
+        deleteButton.className="btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeHopList.appendChild(newLi);

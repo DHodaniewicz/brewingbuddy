@@ -25,6 +25,7 @@
         <li class="list-group-item">Name: ${recipeDetails.name}</li>
         <li class="list-group-item">Style of beer: ${recipeDetails.beerStyle.beerStyle}</li>
         <li class="list-group-item">Expected amount od beer: ${recipeDetails.expectedAmountOfBeer} [L]</li>
+        <li class="list-group-item">Created by: ${recipeDetails.user.username}</li>
     </ul>
     <h4>Declared loss during steps of the process</h4>
     <ul class="list-group">

@@ -15,6 +15,9 @@ import pl.brewingbuddy.repositories.BeerStyleRepository;
 import pl.brewingbuddy.repositories.RecipeRepository;
 import pl.brewingbuddy.repositories.YeastRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -55,17 +58,50 @@ public class RecipeService {
     }
 
     public CalculatedParamsPojo getCalculatedParams(Recipe recipe) {
+
+        recipe = roundRecipeDetailsValues(recipe);
+
         CalculatedParamsPojo calculatedParamsPojo = new CalculatedParamsPojo();
         calculatedParamsPojo.setAmountOfBoiledWort(recipe.getAmountOfBoiledWort());
+        //BigDecimal bdAmountOfBoiledWort = new BigDecimal(recipe.getAmountOfBoiledWort()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setAmountOfBoiledWort(bdAmountOfBoiledWort.doubleValue());
+
         calculatedParamsPojo.setBlgBeforeBoiling(recipe.getBlgBeforeBoiling());
+        //BigDecimal bdBlgBeforeBoiling = new BigDecimal(recipe.getBlgBeforeBoiling()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setBlgBeforeBoiling(bdBlgBeforeBoiling.doubleValue());
+
         calculatedParamsPojo.setAmountOfWortAfterBoiling(recipe.getAmountOfWortAfterBoiling());
+        //BigDecimal bdAmountOfWortAfterBoiling = new BigDecimal(recipe.getAmountOfWortAfterBoiling()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setAmountOfWortAfterBoiling(bdAmountOfWortAfterBoiling.doubleValue());
+
         calculatedParamsPojo.setOverallMeshVolume(recipe.getOverallMeshVolume());
+        //BigDecimal bdOverallMeshVolume = new BigDecimal(recipe.getOverallMeshVolume()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setOverallMeshVolume(bdOverallMeshVolume.doubleValue());
+
         calculatedParamsPojo.setWaterVolumeForMesh(recipe.getWaterVolumeForMesh());
+        //BigDecimal bdWaterVolumeForMesh = new BigDecimal(recipe.getWaterVolumeForMesh()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setWaterVolumeForMesh(bdWaterVolumeForMesh.doubleValue());
+
         calculatedParamsPojo.setWaterVolumeForSparging(recipe.getWaterVolumeForSparging());
+        //BigDecimal bdWaterVolumeForSparging = new BigDecimal(recipe.getWaterVolumeForSparging()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setWaterVolumeForSparging(bdWaterVolumeForSparging.doubleValue());
+
         calculatedParamsPojo.setAbv(recipe.getAbv());
+        //BigDecimal bdAbv = new BigDecimal(recipe.getAbv()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setAbv(bdAbv.doubleValue());
+
         calculatedParamsPojo.setSrm(recipe.getSrm());
+        //BigDecimal bdSrm = new BigDecimal(recipe.getSrm()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setSrm(bdSrm.doubleValue());
+
         calculatedParamsPojo.setBlg(recipe.getBlg());
+        //BigDecimal bdBlg = new BigDecimal(recipe.getBlg()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setBlg(bdBlg.doubleValue());
+
         calculatedParamsPojo.setIbu(recipe.getIbu());
+        //BigDecimal bdIbu = new BigDecimal(recipe.getIbu()).setScale(2, RoundingMode.HALF_UP);
+        //calculatedParamsPojo.setIbu(bdIbu.doubleValue());
+
         return calculatedParamsPojo;
     }
 
@@ -80,6 +116,78 @@ public class RecipeService {
         recipe.setMeshPerformance(75.0);
         return recipe;
     }
+
+    public List<Recipe> roundRecipeValues (List <Recipe> recipeList) {
+        if (recipeList.isEmpty()) {
+            return recipeList;
+        }
+        recipeList.forEach(recipe -> {
+            if(recipe.getIbu() != null & recipe.getBlg() != null) {
+                BigDecimal bdIbu = new BigDecimal(recipe.getIbu()).setScale(2, RoundingMode.HALF_UP);
+                recipe.setIbu(bdIbu.doubleValue());
+                BigDecimal bdBlg = new BigDecimal(recipe.getBlg()).setScale(2, RoundingMode.HALF_UP);
+                recipe.setBlg(bdBlg.doubleValue());
+            }
+
+        });
+        return recipeList;
+    }
+
+    public Recipe roundRecipeDetailsValues (Recipe recipe) {
+
+        if (recipe.getAmountOfBoiledWort() != null) {
+            BigDecimal bdAmountOfBoiledWort = new BigDecimal(recipe.getAmountOfBoiledWort()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setAmountOfBoiledWort(bdAmountOfBoiledWort.doubleValue());
+        }
+
+        if(recipe.getBlgBeforeBoiling() != null) {
+            BigDecimal bdBlgBeforeBoiling = new BigDecimal(recipe.getBlgBeforeBoiling()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setBlgBeforeBoiling(bdBlgBeforeBoiling.doubleValue());
+        }
+
+        if(recipe.getAmountOfWortAfterBoiling() !=  null) {
+            BigDecimal bdAmountOfWortAfterBoiling = new BigDecimal(recipe.getAmountOfWortAfterBoiling()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setAmountOfWortAfterBoiling(bdAmountOfWortAfterBoiling.doubleValue());
+        }
+
+        if(recipe.getOverallMeshVolume() != null) {
+            BigDecimal bdOverallMeshVolume = new BigDecimal(recipe.getOverallMeshVolume()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setOverallMeshVolume(bdOverallMeshVolume.doubleValue());
+        }
+
+        if(recipe.getWaterVolumeForMesh() != null) {
+            BigDecimal bdWaterVolumeForMesh = new BigDecimal(recipe.getWaterVolumeForMesh()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setWaterVolumeForMesh(bdWaterVolumeForMesh.doubleValue());
+        }
+
+        if(recipe.getWaterVolumeForSparging() != null) {
+            BigDecimal bdWaterVolumeForSparging = new BigDecimal(recipe.getWaterVolumeForSparging()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setWaterVolumeForSparging(bdWaterVolumeForSparging.doubleValue());
+        }
+
+        if(recipe.getAbv() != null) {
+            BigDecimal bdAbv = new BigDecimal(recipe.getAbv()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setAbv(bdAbv.doubleValue());
+        }
+
+        if(recipe.getSrm() != null) {
+            BigDecimal bdSrm = new BigDecimal(recipe.getSrm()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setSrm(bdSrm.doubleValue());
+        }
+
+        if (recipe.getBlg() != null) {
+            BigDecimal bdBlg = new BigDecimal(recipe.getBlg()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setBlg(bdBlg.doubleValue());
+        }
+
+        if (recipe.getIbu() != null) {
+            BigDecimal bdIbu = new BigDecimal(recipe.getIbu()).setScale(2, RoundingMode.HALF_UP);
+            recipe.setIbu(bdIbu.doubleValue());
+        }
+        return recipe;
+    }
+
+
 
     public Recipe calculateAmountOfBoiledWort(Recipe recipe) {
         if (recipe.getExpectedAmountOfBeer() == null || recipe.getTimeOfBoiling() == null || recipe.getVaporisationSpeed() == null || recipe.getBoilingLoss() == null) {
