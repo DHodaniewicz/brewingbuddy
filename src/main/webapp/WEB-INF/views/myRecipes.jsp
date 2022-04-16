@@ -32,6 +32,7 @@ To change this template use File | Settings | File Templates.
 
 
 <div class="container-md">
+    <h3>My recipes:</h3>
     <ol class="list-group list-group-numbered">
         <%--@elvariable id="recipe" type="pl.brewingbuddy.entities.Recipe"--%>
         <c:forEach items="${myRecipes}" var="recipe">
@@ -42,19 +43,15 @@ To change this template use File | Settings | File Templates.
                         <div>${recipe.beerStyle.beerStyle} </div>
                         <div>Blg: ${recipe.blg} Ibu: ${recipe.ibu}</div>
                     </div>
-                    <div class="list-group-horizontal-md">
+                    <div class="btn-group" role="group">
                         <a href="/recipe/details/${recipe.id}">
-                            <button class="btn btn-primary btn-lg"> Details</button>
+                            <button class="btn btn-primary"> Details</button>
                         </a>
-                    </div>
-                    <div class="list-group-horizontal-md">
                         <a href="/recipe/update/${recipe.id}">
-                            <button class="btn btn-primary btn-lg"> Edit Recipe </button>
+                            <button class="btn btn-warning"> Edit Recipe</button>
                         </a>
-                    </div>
-                    <div class="list-group-horizontal-md">
                         <a href="/recipe/delete/${recipe.id}">
-                            <button class="btn btn-primary btn-lg"> Edit Recipe </button>
+                            <button class="btn btn-danger"> Delete Recipe</button>
                         </a>
                     </div>
                 </div>

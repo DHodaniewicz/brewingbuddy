@@ -11,4 +11,6 @@ import java.util.List;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByBeerStyle(BeerStyle beerStyle);
     List<Recipe> findAllByUserId(Long userId);
+    List<Recipe> findAllByIsPublic(Boolean isPublic);
+    List<Recipe> findAllByIsPublicAndBeerStyle(Boolean isPublic, BeerStyle beerStyle);
 }

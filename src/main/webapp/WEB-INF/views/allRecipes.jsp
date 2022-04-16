@@ -46,7 +46,7 @@
                         <div>Blg: ${recipe.blg} Ibu: ${recipe.ibu}</div>
                     </div>
                     <div class="list-group-horizontal-md">
-                        <a href="/recipe/details/${recipe.id}"><button class="btn btn-primary btn-lg"> Details </button></a>
+                        <a href="/recipe/details/${recipe.id}"><button class="btn btn-primary"> Details </button></a>
                     </div>
                 </div>
             </li>

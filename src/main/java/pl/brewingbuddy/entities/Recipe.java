@@ -23,7 +23,7 @@ public class Recipe {
     private String name;
     @ManyToOne
     private BeerStyle beerStyle;
-    private boolean isPublic;
+    private Boolean isPublic;
     // Gob
     private Double expectedAmountOfBeer; // [L]
     private Integer timeOfBoiling; // [min]
@@ -63,5 +63,5 @@ public class Recipe {
     private Set<RecipeAdditionalIngredient> recipeAdditionalIngredient;
     //Notes
     private String notes;
-    private boolean isFinished;
+    private Boolean isFinished;
 }

@@ -39,6 +39,7 @@ public class RecipeController {
         Recipe recipe = new Recipe();
         User user = userRepository.getById(Long.parseLong(String.valueOf((Integer) session.getAttribute("userId"))));
         recipe.setUser(user);
+        recipe.setIsPublic(false);
         recipe = recipeRepository.save(recipe);
         recipe = recipeService.setBasicParamsOfCreatedRecipe(recipe);
         model.addAttribute("newRecipe", recipe);
@@ -48,21 +49,21 @@ public class RecipeController {
 
     @GetMapping("/all")
     public String getAllRecipes(Model model) {
-        List<Recipe> allRecipes = recipeRepository.findAll();
+        List<Recipe> allRecipes = recipeRepository.findAllByIsPublic(true);
         model.addAttribute("allRecipes", allRecipes);
         return "allRecipes";
     }
 
     @GetMapping("/my-recipes")
     public String getMyRecipes(HttpSession session, Model model) {
-        List<Recipe> myRecipes = recipeRepository.findAllByUserId(Long.parseLong(String.valueOf((Integer) session.getAttribute("userId"))));
+        List<Recipe> myRecipes = recipeRepository.findAllByUserId(Long.valueOf((Integer) session.getAttribute("userId")));
         model.addAttribute("myRecipes", myRecipes);
         return "myRecipes";
     }
 
     @GetMapping("/all/filter")
     public String getFilteredRecipes(@RequestParam Long beerStyleId, Model model) {
-        List <Recipe> filteredRecipes = recipeRepository.findAllByBeerStyle(beetStyleRepository.getById(beerStyleId));
+        List <Recipe> filteredRecipes = recipeRepository.findAllByIsPublicAndBeerStyle(true, beetStyleRepository.getById(beerStyleId));
         model.addAttribute("allRecipes", filteredRecipes);
         return "allRecipes";
     }
@@ -79,6 +80,12 @@ public class RecipeController {
         Recipe recipe = recipeRepository.getById(id);
         model.addAttribute("newRecipe", recipe);
         return "updateRecipe";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteRecipe(@PathVariable Long id, Model model, HttpSession session) {
+        recipeRepository.deleteById(id);
+        return "redirect:/recipe/my-recipes";
     }
 
 
