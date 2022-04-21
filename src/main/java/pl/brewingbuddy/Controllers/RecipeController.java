@@ -49,7 +49,7 @@ public class RecipeController {
 
     @GetMapping("/all")
     public String getAllRecipes(Model model) {
-        List<Recipe> allRecipes = recipeRepository.findAllByIsPublic(true);
+        List<Recipe> allRecipes = recipeRepository.findAllByIsPublicAndIsFinished(true, true);
         allRecipes = recipeService.roundRecipeValues(allRecipes);
         model.addAttribute("allRecipes", allRecipes);
         return "allRecipes";
@@ -65,7 +65,7 @@ public class RecipeController {
 
     @GetMapping("/all/filter")
     public String getFilteredRecipes(@RequestParam Long beerStyleId, Model model) {
-        List <Recipe> filteredRecipes = recipeRepository.findAllByIsPublicAndBeerStyle(true, beetStyleRepository.getById(beerStyleId));
+        List <Recipe> filteredRecipes = recipeRepository.findAllByIsPublicAndIsFinishedAndBeerStyle(true,true, beetStyleRepository.getById(beerStyleId));
         filteredRecipes = recipeService.roundRecipeValues(filteredRecipes);
         model.addAttribute("allRecipes", filteredRecipes);
         return "allRecipes";
@@ -88,6 +88,14 @@ public class RecipeController {
     @GetMapping("/delete/{id}")
     public String deleteRecipe(@PathVariable Long id, Model model, HttpSession session) {
         recipeRepository.deleteById(id);
+        return "redirect:/recipe/my-recipes";
+    }
+
+    @PostMapping("/save/{id}")
+    public String saveRecipe(@PathVariable Long id, Model model, HttpSession session) {
+        Recipe recipe = recipeRepository.getById(id);
+        recipe.setIsFinished(true);
+        recipeRepository.save(recipe);
         return "redirect:/recipe/my-recipes";
     }
 

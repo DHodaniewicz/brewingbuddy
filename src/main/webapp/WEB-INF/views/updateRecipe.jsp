@@ -89,8 +89,15 @@
                        value="${newRecipe.meshPerformance}">
             </div>
             <div class="mb-3">
+                <c:choose>
+                    <c:when test="${newRecipe.isPublic == true}">
+                        <input type="checkbox" name="isPublic" id="isPublic" checked="checked">
+                    </c:when>
+                    <c:otherwise>
+                        <input type="checkbox" name="isPublic" id="isPublic">
+                    </c:otherwise>
+                </c:choose>
                 <label for="isPublic"> Is this a public recipe? </label>
-                <input type="checkbox" name="isPublic" id="isPublic">
             </div>
             <div class="mb-3">
                 <label for="yeast">Choose type of yeast: </label>
@@ -207,8 +214,8 @@
         </ul>
     </div>
 
-    <div class="d-grid gap-2 col-6">
-        <form method="post" action="">
+    <div class="d-grid gap-2">
+        <form method="post" action="/recipe/save/${newRecipe.id}">
             <button class="btn btn-primary" id="saveRecipe" type="submit"> SAVE RECIPE</button>
         </form>
     </div>
@@ -243,8 +250,7 @@
         let isPublic;
         if (formInputs[10].checked == true) {
             isPublic = true;
-        }
-        else {
+        } else {
             isPublic = false;
         }
 
@@ -439,7 +445,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
-        deleteButton.className="btn btn-danger"
+        deleteButton.className = "btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeMaltList.appendChild(newLi);
@@ -562,7 +568,7 @@
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = 'Delete';
-        deleteButton.className="btn btn-danger"
+        deleteButton.className = "btn btn-danger"
 
         newLi.appendChild(deleteButton);
         recipeHopList.appendChild(newLi);

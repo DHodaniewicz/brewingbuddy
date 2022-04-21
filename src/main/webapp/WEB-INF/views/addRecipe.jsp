@@ -189,8 +189,8 @@
         </ul>
     </div>
 
-    <div class="d-grid gap-2 col-6">
-        <form method="post" action="">
+    <div class="d-grid gap-2">
+        <form method="post" action="/recipe/save/${newRecipe.id}">
             <button class="btn btn-primary" id="saveRecipe" type="submit"> SAVE RECIPE</button>
         </form>
     </div>
