@@ -39,7 +39,13 @@ To change this template use File | Settings | File Templates.
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
                     <div class="list-group-horizontal-md">
-                        <div class="fw-bold">${recipe.name}</div>
+                        <div class="fw-bold">${recipe.name}
+                        <c:choose>
+                            <c:when test="${recipe.isFinished == false}">
+                                (Recipe not finished!)
+                            </c:when>
+                        </c:choose>
+                        </div>
                         <div>${recipe.beerStyle.beerStyle} </div>
                         <div>Blg: ${recipe.blg} Ibu: ${recipe.ibu}</div>
                     </div>

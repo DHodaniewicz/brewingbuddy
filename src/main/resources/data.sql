@@ -22,6 +22,8 @@ insert into beer_style (id, beer_style) VALUES (1, 'Barley wine'), (2, 'Bock'), 
 
 INSERT INTO `role` (`id`, `name`) VALUES (NULL, 'ROLE_USER');
 
-INSERT INTO users (email, enabled, username)  VALUES ('d.hodaniewicz@gmail.com', 1, 'Danny')
+INSERT INTO users (email, enabled, username)  VALUES ('d.hodaniewicz@gmail.com', 1, 'Danny');
+
+INSERT INTO users (email, enabled, username)  VALUES ('d.hodaniewicz@wp.pl', 1, 'Danny_2');
 
 

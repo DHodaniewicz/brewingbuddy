@@ -17,10 +17,10 @@ public class HomeController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(HttpSession session) {
-        session.setAttribute("userId", 1);
-        User user = userRepository.getById(1L);
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userRepository.getById(userId);
         session.setAttribute("username", user.getUsername());
         return "home";
     }

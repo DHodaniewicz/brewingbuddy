@@ -37,7 +37,7 @@ public class RecipeController {
     @GetMapping("/add")
     public String viewAddRecipe(HttpSession session, Model model) {
         Recipe recipe = new Recipe();
-        User user = userRepository.getById(Long.parseLong(String.valueOf((Integer) session.getAttribute("userId"))));
+        User user = userRepository.getById((Long) session.getAttribute("userId"));
         recipe.setUser(user);
         recipe.setIsPublic(false);
         recipe = recipeRepository.save(recipe);
@@ -57,7 +57,7 @@ public class RecipeController {
 
     @GetMapping("/my-recipes")
     public String getMyRecipes(HttpSession session, Model model) {
-        List<Recipe> myRecipes = recipeRepository.findAllByUserId(Long.valueOf((Integer) session.getAttribute("userId")));
+        List<Recipe> myRecipes = recipeRepository.findAllByUserId((Long)session.getAttribute("userId"));
         myRecipes = recipeService.roundRecipeValues(myRecipes);
         model.addAttribute("myRecipes", myRecipes);
         return "myRecipes";
